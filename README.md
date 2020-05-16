@@ -20,7 +20,7 @@ Kulki bedą się odbijać zarówno od każdej innej kulki jak i od ścian okna. 
 
 *Projekt będę realizował indywidualnie. Będzie to gra polegająca na zastrzeleniu wrogich celów. Zakładam 20 poziomów, każdy z nich będzie coraz trudniejszy.
 
-*Szkic interfejsu:SZKIC_INTERFEJSU
+Szkic interfejsu:SZKIC_INTERFEJSU*
 
 *Wrogie cele to czerwone kropki. Przegrywamy po zestrzeleniu zielonego celu, wykorzystaniu całej amunicji, gdy zostały jeszcze czerwone cele lub po upłynięciu czasu (zapomniałem uwzględnić na interfejsie). Kulki odbijają się od siebie oraz ścian. Przewiduje jakieś urozmaicenie graficzne.
 
