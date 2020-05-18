@@ -12,7 +12,7 @@ Odnosząc się do Pana komentarza, bardzo podobają mi się zaproponowane zmiany
 
 Zgodnie z Pana zaleceniami odnośnie ilości poziomów, zmniejsze ich ilość prawdopodobnie do 10. Poziom trudności będzie narastał coraz szybciej co sprawi, że gra będzie ciekawsza.
 
-Najbardziej podoba mi się pomysł ze strzelaniem. Wprowadzę zmiane kierunku poruszania się po strzeleniu w dany obiekt i postaram się zaimplementować zaproponowany przez Pana pomysł, apropo zmiany kierunku również po najechaniu na obiekt. Myślę ze opóznienie strzału również jest w moim zasięgu.
+Najbardziej podoba mi się pomysł ze strzelaniem. Wprowadzę zmiane kierunku poruszania się po strzeleniu w dany obiekt i postaram się zaimplementować zaproponowany przez Pana pomysł, apropo zmiany kierunku również po najechaniu na obiekt. Myślę ze opóznienie strzału również jest w moim zasięgu, jednakże nie będzie ono miało związku z prędkościa kulki po mprostu trzeba będzie strzelić przed nią.
 
 Kulki bedą się odbijać zarówno od każdej innej kulki jak i od ścian okna. Będą to odbicia sprężyste.
 
