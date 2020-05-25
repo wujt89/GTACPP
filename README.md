@@ -20,7 +20,9 @@ Kulki bedą się odbijać zarówno od każdej innej kulki jak i od ścian okna. 
 
 *Projekt będę realizował indywidualnie. Będzie to gra polegająca na zastrzeleniu wrogich celów. Zakładam 20 poziomów, każdy z nich będzie coraz trudniejszy.*
 
-*Szkic interfejsu: makieta w osobnym pliku*
+*Szkic interfejsu: 
+
+![](https://github.com/wujt89/GTACPP/blob/master/Makieta.jpg?raw=true)
 
 
 *Wrogie cele to czerwone kropki. Przegrywamy po zestrzeleniu zielonego celu, wykorzystaniu całej amunicji, gdy zostały jeszcze czerwone cele lub po upłynięciu czasu (zapomniałem uwzględnić na interfejsie). Kulki odbijają się od siebie oraz ścian. Przewiduje jakieś urozmaicenie graficzne.*
