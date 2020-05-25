@@ -20,6 +20,9 @@ public:
     void setwrog(); // ustawia kulke na wroga 
     int mockulki;
     void zmianamocy(); // zmienia moc kulki o jeden po strzale
+    
+    double vx;
+    double vy;
 
 
 };
