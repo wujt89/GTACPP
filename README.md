@@ -4,7 +4,7 @@ Wojciech Mikołajski  A-3  144407
 
  
 
-Zmiany:
+Zmiany:    
 
 *Pozostawiam  poprzedni opis w celu porównania.*
 
