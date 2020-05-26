@@ -23,9 +23,15 @@ public:
     
     double vx;
     double vy;
-
-
 };
+
+class Sciana : public Element
+{
+
+ public:
+ 
+    
+}
 
 
 class Stan : public Kulka
