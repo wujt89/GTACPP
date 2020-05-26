@@ -30,10 +30,7 @@ class Sciana : public Element
 
  public:
  
-    blaaaaaaa'
 
-
-    njjbkbjkjb
 }
 
 
