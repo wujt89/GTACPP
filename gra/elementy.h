@@ -2,6 +2,8 @@
 #define ELEMENTY_H
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <iostream>
+
 
 
 class Elementy : public sf::Sprite
@@ -12,8 +14,16 @@ public:
     int iloscobiektow;
 };
 
+class Background : public Elementy
+{
+    sf::Texture tekstura;
+public:
+    Background();
+};
+
 class Kulka : public Elementy
 {
+    sf::Texture teks;
 public:
     Kulka(int /*mockulki*/); // tworzy kulke o podanej mocy i w zaleznosci od tej mocy nadaje odpowiednie wlasciwosci czyli, predkosc, kolor, pozycje(rand) , wielkosc.
     bool wrog = false;
@@ -25,13 +35,13 @@ public:
     double vy;
 };
 
-class Sciana : public Element
+class Sciana : public Elementy
 {
-
+    sf::Texture teks;
  public:
+    Sciana(int);
 
-
-}
+};
 
 
 class Stan : public Kulka
