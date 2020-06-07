@@ -19,15 +19,16 @@ int main()
 
     while (window.isOpen())
     {
+
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
 
-
             play.schowaj(logo,window, event);
+
         }
 
-        play.click.play();
+
 
 
         window.clear(sf::Color::Black);
@@ -39,6 +40,6 @@ int main()
 
         window.display();
     }
-    play.click.play();
+
     return 0;
 }

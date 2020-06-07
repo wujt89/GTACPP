@@ -31,7 +31,7 @@ public:
 class Playbutton : public Elementy
 {
      sf::Texture tekstura;
-
+    sf::SoundBuffer buffer;
 public:
      sf::Sound click;
     Playbutton();

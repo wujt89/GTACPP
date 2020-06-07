@@ -76,10 +76,10 @@ Playbutton::Playbutton()
     setPosition(400,550);
     setTexture(tekstura);
 
-    sf::SoundBuffer buffer;
-    if (!buffer.loadFromFile("sound/click2.wav"))
+
+    if (!buffer.loadFromFile("sound/click.wav"))
     {
-         std::cout << "Could not load sound" << std::endl;
+        std::cout << "Could not load sound" << std::endl;
     }
     click.setBuffer(buffer);
 
@@ -88,27 +88,27 @@ Playbutton::Playbutton()
 
 void Playbutton::schowaj(Elementy & a, sf::RenderWindow &window, sf::Event event)
 {
-  if (event.type == sf::Event::MouseButtonPressed)
-  {
-    if(event.mouseButton.button == sf::Mouse::Left)
+    if (event.type == sf::Event::MouseButtonPressed)
     {
-        sf::FloatRect playbounds = getGlobalBounds();
-        sf::Vector2i mousepos = sf::Mouse::getPosition(window);
-
-        std::cout << mousepos.x << std::endl;
-        click.play();
-
-        if(playbounds.contains(mousepos.x,mousepos.y))
+        if(event.mouseButton.button == sf::Mouse::Left)
         {
+            sf::FloatRect playbounds = getGlobalBounds();
+            sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+
+            std::cout << mousepos.x << std::endl;
 
 
+            if(playbounds.contains(mousepos.x,mousepos.y))
+            {
 
-            Sleep(200);
-            pokaz=false;
-            a.pokaz=false;
+                click.play();
+
+                Sleep(200);
+                pokaz=false;
+                a.pokaz=false;
+            }
         }
     }
-  }
 }
 
 Title::Title()
