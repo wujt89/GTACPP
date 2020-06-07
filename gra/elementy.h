@@ -2,30 +2,48 @@
 #define ELEMENTY_H
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
+#include <memory>
+#include <vector>
+#include <windows.h>
+#include <algorithm>
+
 
 
 
 class Elementy : public sf::Sprite
 {
 public:
+    bool pokaz = true;
     void kolizja(Elementy, Elementy); //obsluguje kolizje pomiedzy dwoma elementami, sciany tez beda stworzone z tekstur a wiec beda elementami.
     Elementy();
     int iloscobiektow;
 };
 
-class Playbutton : public Elementy
+class Title : public Elementy
 {
      sf::Texture tekstura;
 public:
+    Title();
+};
+
+class Playbutton : public Elementy
+{
+     sf::Texture tekstura;
+
+public:
+     sf::Sound click;
     Playbutton();
+    void schowaj(Elementy&,sf::RenderWindow&, sf::Event event);
+
 };
 
 class Background : public Elementy
 {
     sf::Texture tekstura;
 public:
-    Background(int);
+    Background();
 };
 
 class Kulka : public Elementy

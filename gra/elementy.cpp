@@ -5,27 +5,17 @@ Elementy::Elementy()
 
 }
 
-Background::Background(int a)
+Background::Background()
 {
-    if(a==1)
-    {
+
     if (!tekstura.loadFromFile("tekst/miasto.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
     //tekstura.setRepeated(true);
     setTexture(tekstura);
-    }
 
-    if(a==2)
-    {
-        if (!tekstura.loadFromFile("tekst/title.png")) {
-            std::cout << "Could not load texture" << std::endl;
-        }
-        //tekstura.setRepeated(true);
-        scale(0.33,0.33);
-        setPosition(300,150);
-        setTexture(tekstura);
-    }
+
+
 }
 
 Kulka::Kulka(int moc)
@@ -74,6 +64,8 @@ Sciana::Sciana(int)
     }
 }
 
+
+
 Playbutton::Playbutton()
 {
     if (!tekstura.loadFromFile("tekst/playbutton.png")) {
@@ -82,5 +74,50 @@ Playbutton::Playbutton()
     //tekstura.setRepeated(true);
     scale(0.35,0.35);
     setPosition(400,550);
+    setTexture(tekstura);
+
+    sf::SoundBuffer buffer;
+    if (!buffer.loadFromFile("sound/click2.wav"))
+    {
+         std::cout << "Could not load sound" << std::endl;
+    }
+    click.setBuffer(buffer);
+
+
+}
+
+void Playbutton::schowaj(Elementy & a, sf::RenderWindow &window, sf::Event event)
+{
+  if (event.type == sf::Event::MouseButtonPressed)
+  {
+    if(event.mouseButton.button == sf::Mouse::Left)
+    {
+        sf::FloatRect playbounds = getGlobalBounds();
+        sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+
+        std::cout << mousepos.x << std::endl;
+        click.play();
+
+        if(playbounds.contains(mousepos.x,mousepos.y))
+        {
+
+
+
+            Sleep(200);
+            pokaz=false;
+            a.pokaz=false;
+        }
+    }
+  }
+}
+
+Title::Title()
+{
+    if (!tekstura.loadFromFile("tekst/title.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    //tekstura.setRepeated(true);
+    scale(0.33,0.33);
+    setPosition(300,150);
     setTexture(tekstura);
 }

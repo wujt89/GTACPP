@@ -10,9 +10,11 @@ int main()
 
     sf::Event event;
 
-    Background tlo(1);
-    Background tytul(2);
-    Playbutton button;
+    std::vector<Elementy> elementy;
+
+    Background tlo;
+    Title logo;
+    Playbutton play;
 
 
     while (window.isOpen())
@@ -20,15 +22,23 @@ int main()
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+
+            play.schowaj(logo,window, event);
         }
+
+        play.click.play();
 
 
         window.clear(sf::Color::Black);
-
         window.draw(tlo);
-        window.draw(tytul);
-         window.draw(button);
+        if(logo.pokaz==true)
+            window.draw(logo);
+        if(play.pokaz==true)
+            window.draw(play);
+
         window.display();
     }
+    play.click.play();
     return 0;
 }
