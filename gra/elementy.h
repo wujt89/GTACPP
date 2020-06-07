@@ -14,11 +14,18 @@ public:
     int iloscobiektow;
 };
 
+class Playbutton : public Elementy
+{
+     sf::Texture tekstura;
+public:
+    Playbutton();
+};
+
 class Background : public Elementy
 {
     sf::Texture tekstura;
 public:
-    Background();
+    Background(int);
 };
 
 class Kulka : public Elementy

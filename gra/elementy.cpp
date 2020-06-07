@@ -5,13 +5,27 @@ Elementy::Elementy()
 
 }
 
-Background::Background()
+Background::Background(int a)
 {
-    if (!tekstura.loadFromFile("tekst/grass.png")) {
+    if(a==1)
+    {
+    if (!tekstura.loadFromFile("tekst/miasto.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
     //tekstura.setRepeated(true);
     setTexture(tekstura);
+    }
+
+    if(a==2)
+    {
+        if (!tekstura.loadFromFile("tekst/title.png")) {
+            std::cout << "Could not load texture" << std::endl;
+        }
+        //tekstura.setRepeated(true);
+        scale(0.33,0.33);
+        setPosition(300,150);
+        setTexture(tekstura);
+    }
 }
 
 Kulka::Kulka(int moc)
@@ -58,4 +72,15 @@ Sciana::Sciana(int)
     if (!teks.loadFromFile("tekst/wall.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
+}
+
+Playbutton::Playbutton()
+{
+    if (!tekstura.loadFromFile("tekst/playbutton.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    //tekstura.setRepeated(true);
+    scale(0.35,0.35);
+    setPosition(400,550);
+    setTexture(tekstura);
 }
