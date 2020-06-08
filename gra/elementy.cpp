@@ -1,13 +1,25 @@
 #include "elementy.h"
 
+void Elementy::hide()
+{
+    pokaz=false;
+}
+
+void Elementy::show()
+{
+    pokaz=true;
+}
+
 Elementy::Elementy()
 {
 
 }
 
+
 Background::Background()
 {
 
+    pokaz=true;
     if (!tekstura.loadFromFile("tekst/miasto.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
@@ -18,56 +30,9 @@ Background::Background()
 
 }
 
-Kulka::Kulka(int moc)
-{
-    if(moc==1)
-    {
-        if (!teks.loadFromFile("tekst/red.png")) {
-            std::cout << "Could not load texture" << std::endl;
-        }
-        setTexture(teks);
-        setPosition(std::rand() % 800, std::rand() % 600);
-    }
-
-    else if(moc==2)
-    {
-        if (!teks.loadFromFile("tekst/blue.png")) {
-            std::cout << "Could not load texture" << std::endl;
-        }
-        setTexture(teks);
-        setPosition(std::rand() % 800, std::rand() % 600);
-    }
-
-    else if(moc==3)
-    {
-        if (!teks.loadFromFile("tekst/yellow.png")) {
-            std::cout << "Could not load texture" << std::endl;
-        }
-        setTexture(teks);
-        setPosition(std::rand() % 800, std::rand() % 600);
-    }
-
-    else if(moc==0)
-    {
-        if (!teks.loadFromFile("tekst/green.png")) {
-            std::cout << "Could not load texture" << std::endl;
-        }
-        setTexture(teks);
-        setPosition(std::rand() % 800, std::rand() % 600);
-    }
-}
-
-Sciana::Sciana(int)
-{
-    if (!teks.loadFromFile("tekst/wall.png")) {
-        std::cout << "Could not load texture" << std::endl;
-    }
-}
-
-
-
 Playbutton::Playbutton()
 {
+    pokaz=true;
     if (!tekstura.loadFromFile("tekst/playbutton.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
@@ -86,9 +51,112 @@ Playbutton::Playbutton()
 
 }
 
-void Playbutton::schowaj(Elementy & a, sf::RenderWindow &window, sf::Event event)
+bool Elementy::schowaj(sf::RenderWindow &window, sf::Event event)
 {
-    if (event.type == sf::Event::MouseButtonPressed)
+    if (event.type == sf::Event::MouseButtonPressed&&pokaz==true)
+    {
+        if(event.mouseButton.button == sf::Mouse::Left)
+        {
+            sf::FloatRect playbounds = getGlobalBounds();
+            sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+
+           // std::cout << mousepos.x << std::endl;
+
+
+            if(playbounds.contains(mousepos.x,mousepos.y))
+            {
+
+                click.play();
+
+                Sleep(200);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Elementy::ruch()
+{
+    if(predkosc==1&&vx<=0)
+    {
+        vx=vy=(rand()%4)/100;
+        move(-vx,vy);
+    }
+    else if(predkosc==1&&vy<=0)
+    {
+        vx=vy=(rand()%4)/100;
+        move(vx,-vy);
+    }
+    else if(predkosc==1&&vy<=0&&vx<=0)
+    {
+        vx=vy=(rand()%4)/100;
+        move(-vx,-vy);
+    }
+    else if(predkosc==1&&vy>=0&&vx>=0)
+    {
+        vx=vy=(rand()%4)/100;
+        move(vx,vy);
+    }
+
+    else
+        move(vx,vy);
+}
+
+bool Elementy::kol(Elementy &a)
+{
+    sf::FloatRect bounds = getGlobalBounds();
+    sf::FloatRect abounds = a.getGlobalBounds();
+
+    if(bounds.intersects(abounds))
+        return true;
+    else
+        return false;
+
+
+}
+
+
+
+Title::Title()
+{
+    pokaz=true;
+    if (!tekstura.loadFromFile("tekst/title.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    //tekstura.setRepeated(true);
+    scale(0.33,0.33);
+    setPosition(300,150);
+    setTexture(tekstura);
+}
+
+Tutorialbutton::Tutorialbutton()
+{
+    pokaz=true;
+    if (!tekstura.loadFromFile("tekst/tutorialon.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    if (!tekstura2.loadFromFile("tekst/tutorialoff.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    //tekstura.setRepeated(true);
+    scale(0.35,0.35);
+    setPosition(400,650);
+    setTexture(tekstura);
+
+
+    if (!buffer.loadFromFile("sound/click.wav"))
+    {
+        std::cout << "Could not load sound" << std::endl;
+    }
+    click.setBuffer(buffer);
+
+}
+
+bool Elementy::zmien(sf::RenderWindow & window, sf::Event event)
+{
+
+    if (event.type == sf::Event::MouseButtonPressed&&pokaz==true)
     {
         if(event.mouseButton.button == sf::Mouse::Left)
         {
@@ -104,20 +172,134 @@ void Playbutton::schowaj(Elementy & a, sf::RenderWindow &window, sf::Event event
                 click.play();
 
                 Sleep(200);
-                pokaz=false;
-                a.pokaz=false;
+
+                if(active=='z')
+                {
+                    setTexture(tekstura2);
+                    active='c';
+                    typ=false;
+                }
+                else
+                {
+                    setTexture(tekstura);
+                    active='z';
+                    typ = true;
+                }
             }
         }
     }
+    return typ;
+
 }
 
-Title::Title()
+Hero::Hero()
 {
-    if (!tekstura.loadFromFile("tekst/title.png")) {
+    pokaz=false;
+    if (!tekstura.loadFromFile("tekst/face.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
     //tekstura.setRepeated(true);
-    scale(0.33,0.33);
-    setPosition(300,150);
+    setTextureRect(sf::IntRect(0, 0, 208, 208));
+    //scale(0.33,0.33);
+    setPosition(750,150);
     setTexture(tekstura);
 }
+
+Manual::Manual()
+{
+    pokaz=false;
+    if (!tekstura.loadFromFile("tekst/manual.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    //tekstura.setRepeated(true);
+    //setTextureRect(sf::IntRect(0, 0, 208, 208));
+    scale(0.45,0.30);
+    setPosition(30,30);
+    setTexture(tekstura);
+}
+
+Nextbutton::Nextbutton()
+{
+    pokaz=false;
+    if (!tekstura.loadFromFile("tekst/playbutton.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    //tekstura.setRepeated(true);
+    scale(0.35,0.35);
+    setPosition(780,380);
+    setTexture(tekstura);
+
+
+    if (!buffer.loadFromFile("sound/click.wav"))
+    {
+        std::cout << "Could not load sound" << std::endl;
+    }
+    click.setBuffer(buffer);
+}
+
+Wall::Wall(int w,int h,int x,int y)
+{
+    if (!tekstura.loadFromFile("tekst/wall.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    setTexture(tekstura);
+    tekstura.setRepeated(true);
+
+        setPosition(x,y);
+        setTextureRect(sf::IntRect(0,0,w,h));
+
+
+
+}
+
+Balon::Balon(int moc)
+{
+    if (!teks.loadFromFile("tekst/balony.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    setTexture(teks);
+    int los = rand() % 2;
+    std::cout << los << std::endl;
+    scale(0.3,0.3);
+
+    if(los==0)
+    setPosition(std::rand() % 150 +20, std::rand() % 500 + 60);
+
+    if(los==1)
+    setPosition(std::rand() % 150 +800, std::rand() % 500 + 60);
+
+    if(moc==1)
+    {
+        setTextureRect(sf::IntRect(522,0,204,273));
+        vx=0.05;
+        vy=0.05;
+
+
+    }
+    else if(moc==2)
+    {
+        predkosc=1;
+        vx=vy=(rand()%4)/100;
+        setTextureRect(sf::IntRect(528,474,197,281));
+
+    }
+    else if(moc==3)
+    {
+        vx=0.1;
+        vy=0.1;
+        setTextureRect(sf::IntRect(802,0,198,272));
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

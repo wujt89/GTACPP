@@ -15,28 +15,82 @@
 class Elementy : public sf::Sprite
 {
 public:
-    bool pokaz = true;
+    bool pokaz;
+    void hide();
+    void show();
     void kolizja(Elementy, Elementy); //obsluguje kolizje pomiedzy dwoma elementami, sciany tez beda stworzone z tekstur a wiec beda elementami.
     Elementy();
     int iloscobiektow;
+    char active = 'z';
+    bool typ =true;
+    sf::Texture tekstura;
+    sf::Texture tekstura2;
+    sf::Sound click;
+    bool zmien(sf::RenderWindow&, sf::Event event);
+    bool schowaj(sf::RenderWindow&, sf::Event event);
+    int lvl;
+
+    void ruch();
+    float vx;
+    float vy;
+    int predkosc;
+
+
+    bool kol(Elementy&);
+
+
+
 };
+
+
 
 class Title : public Elementy
 {
-     sf::Texture tekstura;
+    sf::Texture tekstura;
 public:
     Title();
 };
 
 class Playbutton : public Elementy
 {
-     sf::Texture tekstura;
+    sf::Texture tekstura;
     sf::SoundBuffer buffer;
 public:
-     sf::Sound click;
-    Playbutton();
-    void schowaj(Elementy&,sf::RenderWindow&, sf::Event event);
 
+    Playbutton();
+
+
+};
+
+class Nextbutton : public Elementy
+{
+    sf::Texture tekstura;
+    sf::SoundBuffer buffer;
+public:
+
+    Nextbutton();
+
+
+};
+
+class Tutorialbutton : public Elementy
+{
+
+    sf::SoundBuffer buffer;
+
+public:
+
+
+    Tutorialbutton();
+
+
+};
+
+class Manual : public Elementy
+{
+    sf::Texture tekstura;
+public:
+    Manual();
 };
 
 class Background : public Elementy
@@ -46,42 +100,31 @@ public:
     Background();
 };
 
-class Kulka : public Elementy
+class Hero : public Elementy
+{
+    sf::Texture tekstura;
+public:
+
+    Hero();
+};
+
+
+class Balon : public Elementy
 {
     sf::Texture teks;
 public:
-    Kulka(int /*mockulki*/); // tworzy kulke o podanej mocy i w zaleznosci od tej mocy nadaje odpowiednie wlasciwosci czyli, predkosc, kolor, pozycje(rand) , wielkosc.
-    bool wrog = false;
-    void setwrog(); // ustawia kulke na wroga
-    int mockulki;
-    void zmianamocy(); // zmienia moc kulki o jeden po strzale
-
-    double vx;
-    double vy;
+    Balon(int);
 };
 
-class Sciana : public Elementy
+class Wall : public Elementy
 {
     sf::Texture teks;
- public:
-    Sciana(int);
-
-};
-
-
-class Stan : public Kulka
-{
 public:
-    int czas;
-    int amunicja;
-    int level;
-    int score;
-    void shot(); //zmieni score jesli trafimy kulke wroga, jezeli trafimy zielona przegrywamy oraz ilosc amunicji po wykonanym strzale.
-    void sprawdz(); // sprawdzi czy przegralismy lub wygralismy, czyli: ilosc obiektow, czas, ilosc amunicji oraz czy trafilismy w zielona kulke.
+    Wall(int,int,int,int);
 
 };
 
-//Mam zamiar prezentować plansze w taki sposób, że na każdym boku umieszczę czarne tekstury na których będzie łatwiej egzekwować kolizje.
+
 
 
 #endif // ELEMENTY_H
