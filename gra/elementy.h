@@ -50,6 +50,8 @@ public:
     int color=204;
 
 
+       int ammo=15;
+
 };
 
 
@@ -115,6 +117,7 @@ class Hero : public Elementy
     sf::Texture tekstura;
 public:
     int health;
+
     sf::SoundBuffer buffer;
 
     Hero();
@@ -124,6 +127,7 @@ public:
 class Balon : public Elementy
 {
     sf::Texture teks;
+
 public:
     Balon(int);
 };

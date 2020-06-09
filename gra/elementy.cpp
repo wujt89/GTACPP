@@ -126,6 +126,7 @@ int Elementy::shoot(sf::RenderWindow & window, sf::Event event)
             sf::Vector2i mousepos = sf::Mouse::getPosition(window);
 
             // std::cout << mousepos.x << std::endl;
+            shot.play();
 
             if(vx>0)
             {
@@ -161,6 +162,9 @@ int Elementy::shoot(sf::RenderWindow & window, sf::Event event)
                 {
                     return 3;
                 }
+
+                else
+                    return 4;
 
                 std::cout << "trafiony" << std::endl;
 

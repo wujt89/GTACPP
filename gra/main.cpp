@@ -56,33 +56,47 @@ int main()
             if(elementy[2]->lvl==1)
             {
 
-
+                clock2.restart();
                 for(size_t i=0; i<level1.size();i++)
                 {
 
 
-                    if(level1[i]->shoot(window,event)==1)
+
+
+
+
+                    if(elementy[2]->shoot(window,event))
                     {
-                        level1[1]->shot.play();
-                        level1.erase(level1.begin()+i);
-                    }
-                    else if(level1[i]->shoot(window,event)==2)
-                    {
-                        level1.emplace_back(std::make_unique<Balon>(1));
-                        level1.erase(level1.begin()+i);
+
+                        elementy[2]->ammo -=1;
+
+                        std::cout << elementy[2]->ammo << std::endl;
                     }
 
-                    else if(level1[i]->shoot(window,event)==3)
-                    {
-                        level1.emplace_back(std::make_unique<Balon>(2));
-                        level1.erase(level1.begin()+i);
-                    }
 
-                    if(elapsed>0.25)
-                    {
-                        level1[i]->change(window,event);
-                        clock.restart();
-                    }
+
+//                    if(level1[i]->shoot(window,event)==1)
+//                    {
+
+//                        level1.erase(level1.begin()+i);
+//                    }
+//                    else if(level1[i]->shoot(window,event)==2)
+//                    {
+//                        level1.emplace_back(std::make_unique<Balon>(1));
+//                        level1.erase(level1.begin()+i);
+//                    }
+
+//                    else if(level1[i]->shoot(window,event)==3)
+//                    {
+//                        level1.emplace_back(std::make_unique<Balon>(2));
+//                        level1.erase(level1.begin()+i);
+//                    }
+
+//                    if(elapsed>0.25)
+//                    {
+//                        level1[i]->change(window,event);
+//                        clock.restart();
+//                    }
 
 
 
@@ -118,7 +132,7 @@ int main()
 
         elapsed = clock.getElapsedTime().asSeconds();
         elapsedshot = clock2.getElapsedTime().asSeconds();
-        //std::cout<< elapsed << std::endl;
+        //std::cout<< elapsedshot << std::endl;
 
 
         // Hero &boh = dynamic_cast<Hero &>(*elementy[2]);
