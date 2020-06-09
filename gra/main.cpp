@@ -4,6 +4,8 @@
 
 using namespace std;
 
+
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1024, 768), "GTACPP");
@@ -16,13 +18,66 @@ int main()
     float elapsed;
     float elapsedshot;
 
+    sf::Font font;
+
+    if (!font.loadFromFile("ADVENTURE.otf"))
+    {
+        std::cout<< "bleeee:" << std::endl;
+    }
+
+    sf::Text txtammo;
+    sf::Text txtlevel;
+    sf::Text txttime;
+    sf::Text txthealth;
+
+
+    txtammo.setFont(font);
+    txtammo.setCharacterSize(35);
+    txtammo.setFillColor(sf::Color::Black);
+    txtammo.setStyle(sf::Text::Bold);
+    txtlevel.setFont(font);
+    txtlevel.setCharacterSize(35);
+    txtlevel.setFillColor(sf::Color::Black);
+    txtlevel.setStyle(sf::Text::Bold);
+    txttime.setFont(font);
+    txttime.setCharacterSize(35);
+    txttime.setFillColor(sf::Color::Black);
+    txttime.setStyle(sf::Text::Bold);
+    txthealth.setFont(font);
+    txthealth.setCharacterSize(35);
+    txthealth.setFillColor(sf::Color::Black);
+    txthealth.setStyle(sf::Text::Bold);
+
+    txttime.setPosition(30,15);
+    txtlevel.setPosition(300,15);
+    txthealth.setPosition(500,15);
+    txtammo.setPosition(700,15);
+
+    sf::Sound sound;
+    sf::SoundBuffer buffer;
+
+    if (!buffer.loadFromFile("sound/shot.wav"))
+    {
+        std::cout << "Could not load sound" << std::endl;
+    }
+    sound.setBuffer(buffer);
+
+    //Dzwiek shot("sound/shot.wav");
+
+    int ammo=15;
+    int balony=4;
+    int czas=45;
+    int lvl=0;
+    int health=50;
+
+
 
 
     std::vector<std::unique_ptr<Elementy>> sciany;
     sciany.emplace_back(std::make_unique<Wall>(20,768,0,0));
     sciany.emplace_back(std::make_unique<Wall>(20,768,1004,0));
     sciany.emplace_back(std::make_unique<Wall>(1024,20,0,748));
-    sciany.emplace_back(std::make_unique<Wall>(1024,50,0,0));
+    sciany.emplace_back(std::make_unique<Wall>(1024,70,0,0));
 
     std::vector<std::unique_ptr<Elementy>> level1;
     level1.emplace_back(std::make_unique<Balon>(1));
@@ -46,62 +101,71 @@ int main()
     {
 
 
+
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
 
-
-
-
-            if(elementy[2]->lvl==1)
+            if(lvl>=1)
             {
 
-                clock2.restart();
-                for(size_t i=0; i<level1.size();i++)
+
+                if (event.type == sf::Event::MouseButtonPressed)
                 {
 
-
-
-
-
-
-                    if(elementy[2]->shoot(window,event))
+                    std::cout<< ammo << " " << czas <<" " << balony <<  std::endl;
+                    if(event.mouseButton.button == sf::Mouse::Left)
                     {
+                           sound.play();
+                        ammo--;
+                        auto texta = std::to_string(ammo);
 
-                        elementy[2]->ammo -=1;
+                        txtammo.setString("ammo "+texta);
 
-                        std::cout << elementy[2]->ammo << std::endl;
+                        sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+                        for(size_t i=0; i<level1.size();i++)
+                        {
+
+                            elementy[0]->shoot(mousepos);
+
+                            if(level1[i]->shoot(mousepos)==1)
+                            {
+                                balony--;
+                                level1.erase(level1.begin()+i);
+                            }
+                            else if(level1[i]->shoot(mousepos)==2)
+                            {
+
+                                level1.emplace_back(std::make_unique<Balon>(1));
+                                level1.erase(level1.begin()+i);
+                            }
+
+                            else if(level1[i]->shoot(mousepos)==3)
+                            {
+
+                                level1.emplace_back(std::make_unique<Balon>(2));
+                                level1.erase(level1.begin()+i);
+                            }
+
+                        }
                     }
-
-
-
-//                    if(level1[i]->shoot(window,event)==1)
-//                    {
-
-//                        level1.erase(level1.begin()+i);
-//                    }
-//                    else if(level1[i]->shoot(window,event)==2)
-//                    {
-//                        level1.emplace_back(std::make_unique<Balon>(1));
-//                        level1.erase(level1.begin()+i);
-//                    }
-
-//                    else if(level1[i]->shoot(window,event)==3)
-//                    {
-//                        level1.emplace_back(std::make_unique<Balon>(2));
-//                        level1.erase(level1.begin()+i);
-//                    }
-
-//                    if(elapsed>0.25)
-//                    {
-//                        level1[i]->change(window,event);
-//                        clock.restart();
-//                    }
-
-
-
                 }
             }
+
+            if (event.type == sf::Event::MouseMoved)
+            {
+                sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+                for(size_t i=0; i<level1.size();i++)
+                {
+                    if(elapsed>0.5)
+                    {
+                        level1[i]->change(mousepos);
+                        clock.restart();
+                    }
+                }
+            }
+
+
 
             if(elementy[6]->zmien(window,event)==true&&elementy[4]->schowaj(window,event)==true)
             {
@@ -121,7 +185,11 @@ int main()
                 elementy[1]->pokaz=false;
                 elementy[2]->setPosition(400,400);
                 elementy[3]->pokaz=false;
-                elementy[2]->lvl=1;
+                lvl=1;
+
+                auto textl = std::to_string(lvl);
+
+                txtlevel.setString("level: "+textl);
             }
 
 
@@ -129,10 +197,44 @@ int main()
 
 
         }
+        if(elapsedshot>1&&lvl>=1)
+        {
+            clock2.restart();
+            czas--;
+            auto textt = std::to_string(czas);
+
+
+            txttime.setString("time: " + textt);
+
+        }
+
+        if(balony==0&&lvl>=1)
+        {
+            level1.emplace_back(std::make_unique<Balon>(1));
+            level1.emplace_back(std::make_unique<Balon>(2));
+            level1.emplace_back(std::make_unique<Balon>(3));
+            level1.emplace_back(std::make_unique<Balon>(3));
+            balony=4;
+            czas=45;
+            lvl++;
+            ammo=15;
+
+            auto textt = std::to_string(czas);
+            txttime.setString("time " + textt);
+            auto textl = std::to_string(lvl);
+            txttime.setString("level " + textl);
+            auto texta = std::to_string(ammo);
+            txttime.setString("ammo " + texta);
+            auto texth = std::to_string(health);
+            txthealth.setString("helath " + texth);
+
+            Sleep(100);
+        }
+
 
         elapsed = clock.getElapsedTime().asSeconds();
         elapsedshot = clock2.getElapsedTime().asSeconds();
-        //std::cout<< elapsedshot << std::endl;
+        // std::cout<< ammo << " " << czas <<" " << balony <<  std::endl;
 
 
         // Hero &boh = dynamic_cast<Hero &>(*elementy[2]);
@@ -148,7 +250,7 @@ int main()
             if(el->pokaz==true)
                 window.draw(*el);
         }
-        if(elementy[2]->lvl==1)
+        if(lvl>=1)
         {
             for(auto &el : level1)
             {
@@ -162,7 +264,12 @@ int main()
                     el->vy=-(el->vy);
                 }
 
-                el->balon_bohater(*elementy[2],1,true);
+                if(el->balon_bohater(*elementy[2],1,true))
+                {
+                    health--;
+                    auto texth = std::to_string(health);
+                    txthealth.setString("helath " + texth);
+                }
                 el->balon_bohater(*elementy[2],2,false);
 
                 for(size_t i=0; i<level1.size();i++)
@@ -184,10 +291,24 @@ int main()
             {
                 window.draw(*el);
             }
+
+                window.draw(txtammo);
+                window.draw(txtlevel);
+                window.draw(txttime);
+                window.draw(txthealth);
+
+
+        }
+
+        if(ammo==0||czas==0||health==0)
+        {
+            window.close();
+            std::cout << "Niestety Przegrałes. Twoj wynik to: " << lvl << std::endl;
         }
 
         window.display();
     }
 
-    return 0;
+
 }
+

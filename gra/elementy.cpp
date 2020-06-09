@@ -116,16 +116,13 @@ bool Elementy::kol(Elementy &a)
 
 }
 
-int Elementy::shoot(sf::RenderWindow & window, sf::Event event)
+int Elementy::shoot(sf::Vector2i mousepos)
 {
-    if (event.type == sf::Event::MouseButtonPressed&&pokaz==true)
-    {
-        if(event.mouseButton.button == sf::Mouse::Left)
-        {
-            sf::FloatRect playbounds = getGlobalBounds();
-            sf::Vector2i mousepos = sf::Mouse::getPosition(window);
 
-            // std::cout << mousepos.x << std::endl;
+            sf::FloatRect playbounds = getGlobalBounds();
+
+
+
             shot.play();
 
             if(vx>0)
@@ -169,17 +166,15 @@ int Elementy::shoot(sf::RenderWindow & window, sf::Event event)
                 std::cout << "trafiony" << std::endl;
 
             }
-        }
-    }
+
+
     return 0;
 }
 
-void Elementy::change(sf::RenderWindow & window, sf::Event event)
+void Elementy::change(sf::Vector2i mousepos)
 {
-    if (event.type == sf::Event::MouseMoved)
-    {
+
         sf::FloatRect elbounds = getGlobalBounds();
-        sf::Vector2i mousepos = sf::Mouse::getPosition(window);
 
         if(elbounds.contains(mousepos.x, mousepos.y))
         {
@@ -204,10 +199,10 @@ void Elementy::change(sf::RenderWindow & window, sf::Event event)
             }
         }
 
-    }
+
 }
 
-void Elementy::balon_bohater(Elementy & a,int b, bool red)
+bool Elementy::balon_bohater(Elementy & a,int b, bool red)
 {
     sf::FloatRect abounds = a.getGlobalBounds();
     sf::FloatRect bounds = getGlobalBounds();
@@ -219,9 +214,10 @@ void Elementy::balon_bohater(Elementy & a,int b, bool red)
         move(vx,vy);
         if(red==true&&a.color>2)
         {
-            a.color-=29;
+            a.color-=4;
             a.setColor(sf::Color(255,a.color,a.color,255));
         }
+        return true;
     }
     if(bounds.intersects(abounds)&&b==2)
     {
@@ -231,7 +227,7 @@ void Elementy::balon_bohater(Elementy & a,int b, bool red)
     }
 
 
-
+return false;
 
 }
 
@@ -322,11 +318,7 @@ Hero::Hero()
     //scale(0.33,0.33);
     setPosition(750,150);
     setTexture(tekstura);
-    if (!buffer.loadFromFile("sound/shot.wav"))
-    {
-        std::cout << "Could not load sound" << std::endl;
-    }
-    shot.setBuffer(buffer);
+
 }
 
 Manual::Manual()
@@ -418,6 +410,7 @@ Balon::Balon(int moc)
     }
 
 }
+
 
 
 

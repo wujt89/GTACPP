@@ -43,16 +43,17 @@ public:
 
      sf::Sound shot;
     //bool shot;
-    int shoot(sf::RenderWindow & window, sf::Event event);
+    int shoot(sf::Vector2i mousepos);
 
-    void change(sf::RenderWindow&, sf::Event event);
-    void balon_bohater(Elementy&,int,bool);
+    void change(sf::Vector2i mousepos);
+    bool balon_bohater(Elementy&,int,bool);
     int color=204;
 
 
-       int ammo=15;
+
 
 };
+
 
 
 
