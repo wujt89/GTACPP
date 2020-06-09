@@ -10,9 +10,11 @@ int main()
 
     sf::Event event;
 
-    // std::vector<Elementy> elementy;
+    sf::Clock clock;
+    sf::Time time;
+    float elapsed;
 
-    // Background tlo;
+
 
     std::vector<std::unique_ptr<Elementy>> sciany;
     sciany.emplace_back(std::make_unique<Wall>(20,768,0,0));
@@ -41,10 +43,28 @@ int main()
     while (window.isOpen())
     {
 
+
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
 
+
+
+
+            if(elementy[2]->lvl==1)
+            {
+                elementy[2]->shoot(window,event);
+                for(auto &el:level1)
+                {
+                    el->shoot(window,event);
+                    if(elapsed>0.25)
+                    {
+                        el->change(window,event);
+                        clock.restart();
+                    }
+
+                }
+            }
 
             if(elementy[6]->zmien(window,event)==true&&elementy[4]->schowaj(window,event)==true)
             {
@@ -69,11 +89,15 @@ int main()
 
 
 
+
+
         }
 
+        elapsed = clock.getElapsedTime().asSeconds();
+        //std::cout<< elapsed << std::endl;
 
 
-
+       // Hero &boh = dynamic_cast<Hero &>(*elementy[2]);
 
 
         window.clear(sf::Color::Black);

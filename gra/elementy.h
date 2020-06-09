@@ -16,9 +16,10 @@ class Elementy : public sf::Sprite
 {
 public:
     bool pokaz;
+
     void hide();
     void show();
-    void kolizja(Elementy, Elementy); //obsluguje kolizje pomiedzy dwoma elementami, sciany tez beda stworzone z tekstur a wiec beda elementami.
+
     Elementy();
     int iloscobiektow;
     char active = 'z';
@@ -38,6 +39,11 @@ public:
 
     bool kol(Elementy&);
 
+     sf::Sound shot;
+    //bool shot;
+    bool shoot(sf::RenderWindow & window, sf::Event event);
+
+    void change(sf::RenderWindow&, sf::Event event);
 
 
 };
@@ -104,6 +110,8 @@ class Hero : public Elementy
 {
     sf::Texture tekstura;
 public:
+    int health;
+    sf::SoundBuffer buffer;
 
     Hero();
 };

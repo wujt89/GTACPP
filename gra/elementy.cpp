@@ -60,7 +60,7 @@ bool Elementy::schowaj(sf::RenderWindow &window, sf::Event event)
             sf::FloatRect playbounds = getGlobalBounds();
             sf::Vector2i mousepos = sf::Mouse::getPosition(window);
 
-           // std::cout << mousepos.x << std::endl;
+            // std::cout << mousepos.x << std::endl;
 
 
             if(playbounds.contains(mousepos.x,mousepos.y))
@@ -114,6 +114,82 @@ bool Elementy::kol(Elementy &a)
         return false;
 
 
+}
+
+bool Elementy::shoot(sf::RenderWindow & window, sf::Event event)
+{
+    if (event.type == sf::Event::MouseButtonPressed&&pokaz==true)
+    {
+        if(event.mouseButton.button == sf::Mouse::Left)
+        {
+            sf::FloatRect playbounds = getGlobalBounds();
+            sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+
+            // std::cout << mousepos.x << std::endl;
+            shot.play();
+            if(vx>0)
+            {
+                mousepos.x= mousepos.x-15;
+            }
+            else if(vx<0)
+            {
+                mousepos.x= mousepos.x+15;
+            }
+
+            if(vy>0)
+            {
+                mousepos.y= mousepos.y-15;
+            }
+            else if(vy<0)
+            {
+                mousepos.y= mousepos.y+15;
+            }
+
+
+            if(playbounds.contains(mousepos.x,mousepos.y))
+            {
+
+
+
+                std::cout << "trafiony" << std::endl;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Elementy::change(sf::RenderWindow & window, sf::Event event)
+{
+    if (event.type == sf::Event::MouseMoved)
+    {
+        sf::FloatRect elbounds = getGlobalBounds();
+        sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+
+        if(elbounds.contains(mousepos.x, mousepos.y))
+        {
+            int los=rand()%3;
+           // std::cout<< los << std::endl;
+            switch(los)
+            {
+            case 0:
+                vx=-vx;
+                break;
+
+            case 1:
+                vy=-vy;
+                break;
+
+
+            case 2:
+                vx=-vx;
+                vy=-vy;
+                break;
+
+            }
+        }
+
+    }
 }
 
 
@@ -203,6 +279,11 @@ Hero::Hero()
     //scale(0.33,0.33);
     setPosition(750,150);
     setTexture(tekstura);
+    if (!buffer.loadFromFile("sound/shot.wav"))
+    {
+        std::cout << "Could not load sound" << std::endl;
+    }
+    shot.setBuffer(buffer);
 }
 
 Manual::Manual()
@@ -245,8 +326,8 @@ Wall::Wall(int w,int h,int x,int y)
     setTexture(tekstura);
     tekstura.setRepeated(true);
 
-        setPosition(x,y);
-        setTextureRect(sf::IntRect(0,0,w,h));
+    setPosition(x,y);
+    setTextureRect(sf::IntRect(0,0,w,h));
 
 
 
@@ -263,10 +344,10 @@ Balon::Balon(int moc)
     scale(0.3,0.3);
 
     if(los==0)
-    setPosition(std::rand() % 150 +20, std::rand() % 500 + 60);
+        setPosition(std::rand() % 150 +20, std::rand() % 500 + 60);
 
     if(los==1)
-    setPosition(std::rand() % 150 +800, std::rand() % 500 + 60);
+        setPosition(std::rand() % 150 +800, std::rand() % 500 + 60);
 
     if(moc==1)
     {
