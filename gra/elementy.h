@@ -31,6 +31,8 @@ public:
     bool schowaj(sf::RenderWindow&, sf::Event event);
     int lvl;
 
+    int power;
+
     void ruch();
     float vx;
     float vy;
@@ -41,9 +43,11 @@ public:
 
      sf::Sound shot;
     //bool shot;
-    bool shoot(sf::RenderWindow & window, sf::Event event);
+    int shoot(sf::RenderWindow & window, sf::Event event);
 
     void change(sf::RenderWindow&, sf::Event event);
+    void balon_bohater(Elementy&,int,bool);
+    int color=204;
 
 
 };

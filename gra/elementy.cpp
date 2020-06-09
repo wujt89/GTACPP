@@ -116,7 +116,7 @@ bool Elementy::kol(Elementy &a)
 
 }
 
-bool Elementy::shoot(sf::RenderWindow & window, sf::Event event)
+int Elementy::shoot(sf::RenderWindow & window, sf::Event event)
 {
     if (event.type == sf::Event::MouseButtonPressed&&pokaz==true)
     {
@@ -126,7 +126,7 @@ bool Elementy::shoot(sf::RenderWindow & window, sf::Event event)
             sf::Vector2i mousepos = sf::Mouse::getPosition(window);
 
             // std::cout << mousepos.x << std::endl;
-            shot.play();
+
             if(vx>0)
             {
                 mousepos.x= mousepos.x-15;
@@ -149,14 +149,25 @@ bool Elementy::shoot(sf::RenderWindow & window, sf::Event event)
             if(playbounds.contains(mousepos.x,mousepos.y))
             {
 
-
+                if(power==1)
+                {
+                    return 1;
+                }
+                else if(power==2)
+                {
+                    return 2;
+                }
+                else if(power==3)
+                {
+                    return 3;
+                }
 
                 std::cout << "trafiony" << std::endl;
-                return true;
+
             }
         }
     }
-    return false;
+    return 0;
 }
 
 void Elementy::change(sf::RenderWindow & window, sf::Event event)
@@ -169,7 +180,7 @@ void Elementy::change(sf::RenderWindow & window, sf::Event event)
         if(elbounds.contains(mousepos.x, mousepos.y))
         {
             int los=rand()%3;
-           // std::cout<< los << std::endl;
+            // std::cout<< los << std::endl;
             switch(los)
             {
             case 0:
@@ -190,6 +201,34 @@ void Elementy::change(sf::RenderWindow & window, sf::Event event)
         }
 
     }
+}
+
+void Elementy::balon_bohater(Elementy & a,int b, bool red)
+{
+    sf::FloatRect abounds = a.getGlobalBounds();
+    sf::FloatRect bounds = getGlobalBounds();
+
+    if(bounds.intersects(abounds)&&b==1)
+    {
+        vx=-vx;
+
+        move(vx,vy);
+        if(red==true&&a.color>2)
+        {
+            a.color-=29;
+            a.setColor(sf::Color(255,a.color,a.color,255));
+        }
+    }
+    if(bounds.intersects(abounds)&&b==2)
+    {
+        move(-vx,-vy);
+        vx=-vx;
+        vy=-vy;
+    }
+
+
+
+
 }
 
 
@@ -354,6 +393,7 @@ Balon::Balon(int moc)
         setTextureRect(sf::IntRect(522,0,204,273));
         vx=0.05;
         vy=0.05;
+        power=1;
 
 
     }
@@ -362,6 +402,7 @@ Balon::Balon(int moc)
         predkosc=1;
         vx=vy=(rand()%4)/100;
         setTextureRect(sf::IntRect(528,474,197,281));
+        power=2;
 
     }
     else if(moc==3)
@@ -369,6 +410,7 @@ Balon::Balon(int moc)
         vx=0.1;
         vy=0.1;
         setTextureRect(sf::IntRect(802,0,198,272));
+        power=3;
     }
 
 }

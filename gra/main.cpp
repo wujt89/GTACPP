@@ -11,8 +11,10 @@ int main()
     sf::Event event;
 
     sf::Clock clock;
+    sf::Clock clock2;
     sf::Time time;
     float elapsed;
+    float elapsedshot;
 
 
 
@@ -53,15 +55,36 @@ int main()
 
             if(elementy[2]->lvl==1)
             {
-                elementy[2]->shoot(window,event);
-                for(auto &el:level1)
+
+
+                for(size_t i=0; i<level1.size();i++)
                 {
-                    el->shoot(window,event);
+
+
+                    if(level1[i]->shoot(window,event)==1)
+                    {
+                        level1[1]->shot.play();
+                        level1.erase(level1.begin()+i);
+                    }
+                    else if(level1[i]->shoot(window,event)==2)
+                    {
+                        level1.emplace_back(std::make_unique<Balon>(1));
+                        level1.erase(level1.begin()+i);
+                    }
+
+                    else if(level1[i]->shoot(window,event)==3)
+                    {
+                        level1.emplace_back(std::make_unique<Balon>(2));
+                        level1.erase(level1.begin()+i);
+                    }
+
                     if(elapsed>0.25)
                     {
-                        el->change(window,event);
+                        level1[i]->change(window,event);
                         clock.restart();
                     }
+
+
 
                 }
             }
@@ -94,10 +117,11 @@ int main()
         }
 
         elapsed = clock.getElapsedTime().asSeconds();
+        elapsedshot = clock2.getElapsedTime().asSeconds();
         //std::cout<< elapsed << std::endl;
 
 
-       // Hero &boh = dynamic_cast<Hero &>(*elementy[2]);
+        // Hero &boh = dynamic_cast<Hero &>(*elementy[2]);
 
 
         window.clear(sf::Color::Black);
@@ -122,6 +146,18 @@ int main()
                 if(el->kol(*sciany[2])||el->kol(*sciany[3]))
                 {
                     el->vy=-(el->vy);
+                }
+
+                el->balon_bohater(*elementy[2],1,true);
+                el->balon_bohater(*elementy[2],2,false);
+
+                for(size_t i=0; i<level1.size();i++)
+                {
+                    if(el!=level1[i])
+                    {
+                        el->balon_bohater(*level1[i],1,false);
+                        el->balon_bohater(*level1[i],2,false);
+                    }
                 }
 
             }
