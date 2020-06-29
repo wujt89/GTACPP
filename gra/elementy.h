@@ -1,5 +1,7 @@
-#ifndef ELEMENTY_H
-#define ELEMENTY_H
+#ifndef ELEMENTS_H
+#define ELEMENTS_H
+
+
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -8,143 +10,108 @@
 #include <vector>
 #include <windows.h>
 #include <algorithm>
-//#include <Text.hpp>
 
 
-
-
-class Elementy : public sf::Sprite
+class Elements : public sf::Sprite
 {
 public:
-    bool pokaz;
-    int face=0;
-    void hurt(int);
+    Elements();
+    bool visible;
+};
 
-    void hide();
-    void show();
+class StaticObject : public Elements
+{
+    sf::Texture tekstura;
 
-    Elementy();
-    int iloscobiektow;
-    char active = 'z';
-    bool typ =true;
+
+public:
+    StaticObject(float x, float y, float scx, float scy, std::string plik, bool show);
+
+};
+
+class PlayButton : public Elements
+{
+    sf::Texture tekstura;
+    sf::SoundBuffer buffer;
+public:
+
+    sf::Sound click;
+    PlayButton();
+    void press(sf::Vector2i mousepos, int&, bool&, bool&, bool&, bool&, Elements &);
+};
+
+class TutorialButton : public Elements
+{
     sf::Texture tekstura;
     sf::Texture tekstura2;
+    sf::SoundBuffer buffer;
+
+public:
+
+    bool on;
     sf::Sound click;
-    bool zmien(sf::RenderWindow&, sf::Event event);
-    bool schowaj(sf::RenderWindow&, sf::Event event);
-    int lvl;
-
-    int power;
-
-    void ruch();
-    float vx;
-    float vy;
-    int moving=1;
-
-
-
-    bool kol(Elementy&);
-
-     sf::Sound shot;
-    //bool shot;
-    int shoot(sf::Vector2i mousepos);
-
+    TutorialButton();
     void change(sf::Vector2i mousepos);
-    bool balon_bohater(Elementy&,int,bool);
+};
+
+class Guy : public Elements
+{
+    sf::Texture tekstura;
+    sf::SoundBuffer buffer;
+
+public:
+    int level= -1;
+    int ammo=15;
+    int health=50;
+    int balony=4;
+    int time =20;
+    Guy();
     int color=204;
-
-
-
+    sf::Sound sound;
 
 };
 
-
-
-
-class Title : public Elementy
+class Wall : public Elements
 {
     sf::Texture tekstura;
 public:
-    Title();
-};
 
-class Playbutton : public Elementy
-{
-    sf::Texture tekstura;
-    sf::SoundBuffer buffer;
-public:
-
-    Playbutton();
-
-
-};
-
-class Nextbutton : public Elementy
-{
-    sf::Texture tekstura;
-    sf::SoundBuffer buffer;
-public:
-
-    Nextbutton();
-
-
-};
-
-class Tutorialbutton : public Elementy
-{
-
-    sf::SoundBuffer buffer;
-
-public:
-
-
-    Tutorialbutton();
-
-
-};
-
-class Manual : public Elementy
-{
-    sf::Texture tekstura;
-public:
-    Manual();
-};
-
-class Background : public Elementy
-{
-    sf::Texture tekstura;
-public:
-    Background();
-};
-
-class Hero : public Elementy
-{
-    sf::Texture tekstura;
-
-public:
-    int health;  
-
-    Hero();
-};
-
-
-class Balon : public Elementy
-{
-    sf::Texture teks;
-
-public:
-    Balon(int);
-};
-
-class Wall : public Elementy
-{
-    sf::Texture teks;
-public:
     Wall(int,int,int,int);
 
 };
 
+class Baloon : public Elements
+{
+    sf::Texture teks;
+    int moving=1;
+
+public:
+    Baloon(int);
+    Baloon();
+    float vx;
+    float vy;
+    int power;
+    bool usun =false;
+
+    void make(std::vector<std::unique_ptr<Baloon>>& vec);
+    void sprawdz(Guy&, std::vector<std::unique_ptr<Baloon>>& vec, bool&);
+    void kolizja(Elements&, Elements&, Elements&, Elements&);
+    void kolizja_bohater(Guy&,int,bool, sf::Clock &);
+    void kolizja_balony(Baloon&,int);
+    void shoot(sf::Vector2i, Guy&, std::vector<std::unique_ptr<Baloon>>& vec);
+};
+
+class PlayAgainButton : public Elements
+{
+    sf::Texture tekstura;
+    sf::SoundBuffer buffer;
+public:
+
+    sf::Sound click;
+    PlayAgainButton();
+    void press(sf::Vector2i mousepos, bool &, Guy &);
 
 
+};
 
-#endif // ELEMENTY_H
+#endif // ELEMENTS_H

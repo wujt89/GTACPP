@@ -1,231 +1,80 @@
 #include "elementy.h"
 
-void Elementy::hide()
-{
-    pokaz=false;
-}
-
-void Elementy::show()
-{
-    pokaz=true;
-}
-
-Elementy::Elementy()
+Elements::Elements()
 {
 
 }
 
 
-Background::Background()
+StaticObject::StaticObject(float x, float y, float scx, float scy, std::string plik, bool show)
 {
-
-    pokaz=true;
-    if (!tekstura.loadFromFile("tekst/miasto.png")) {
+    if (!tekstura.loadFromFile(plik)) {
         std::cout << "Could not load texture" << std::endl;
     }
-    //tekstura.setRepeated(true);
+    visible=show;
+    setPosition(x,y);
+    setScale(scx,scy);
+
     setTexture(tekstura);
-
-
-
 }
 
-Playbutton::Playbutton()
+
+PlayButton::PlayButton()
 {
-    pokaz=true;
     if (!tekstura.loadFromFile("tekst/playbutton.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
-    //tekstura.setRepeated(true);
-    scale(0.35,0.35);
+    visible=true;
     setPosition(400,550);
-    setTexture(tekstura);
+    setScale(0.35,0.35);
 
+    setTexture(tekstura);
 
     if (!buffer.loadFromFile("sound/click.wav"))
     {
         std::cout << "Could not load sound" << std::endl;
     }
     click.setBuffer(buffer);
-
-
 }
 
-bool Elementy::schowaj(sf::RenderWindow &window, sf::Event event)
-{
-    if (event.type == sf::Event::MouseButtonPressed&&pokaz==true)
-    {
-        if(event.mouseButton.button == sf::Mouse::Left)
-        {
-            sf::FloatRect playbounds = getGlobalBounds();
-            sf::Vector2i mousepos = sf::Mouse::getPosition(window);
-
-            // std::cout << mousepos.x << std::endl;
-
-
-            if(playbounds.contains(mousepos.x,mousepos.y))
-            {
-
-                click.play();
-
-                Sleep(200);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-void Elementy::ruch()
-{
-    move(vx,vy);
-}
-
-bool Elementy::kol(Elementy &a)
+void PlayButton::press(sf::Vector2i mousepos, int& level, bool &on, bool& vis, bool& vi, bool& v, Elements& guy)
 {
     sf::FloatRect bounds = getGlobalBounds();
-    sf::FloatRect abounds = a.getGlobalBounds();
-
-    if(bounds.intersects(abounds))
-        return true;
-    else
-        return false;
-
-
-}
-
-int Elementy::shoot(sf::Vector2i mousepos)
-{
-
-    sf::FloatRect playbounds = getGlobalBounds();
-
-    if(moving==1)
+    if(bounds.contains(mousepos.x, mousepos.y)&&visible==true)
     {
+        click.play();
+        if(on==true&&level<0)
+        {
+            level ++;
+            v=true;
+            setPosition(780,380);
+            guy.visible=true;
 
-        if(vx>0)
-        {
-            mousepos.x= mousepos.x-15;
         }
-        else if(vx<0)
+        else if(level==0)
         {
-            mousepos.x= mousepos.x+15;
+            visible = false;
+            v=false;
+            guy.setPosition(450,350);
+            level++;
         }
-
-        if(vy>0)
-        {
-            mousepos.y= mousepos.y-15;
-        }
-        else if(vy<0)
-        {
-            mousepos.y= mousepos.y+15;
-        }
-    }
-
-
-    if(playbounds.contains(mousepos.x,mousepos.y))
-    {
-
-        if(power==1)
-        {
-            return 1;
-        }
-        else if(power==2)
-        {
-            return 2;
-        }
-        else if(power==3)
-        {
-            return 3;
-        }
-
         else
-            return 4;
-
-        std::cout << "trafiony" << std::endl;
-
-    }
-
-
-    return 0;
-}
-
-void Elementy::change(sf::Vector2i mousepos)
-{
-
-    sf::FloatRect elbounds = getGlobalBounds();
-
-    if(elbounds.contains(mousepos.x, mousepos.y))
-    {
-        int los=rand()%3;
-        // std::cout<< los << std::endl;
-        switch(los)
         {
-        case 0:
-            vx=-vx;
-            break;
-
-        case 1:
-            vy=-vy;
-            break;
-
-
-        case 2:
-            vx=-vx;
-            vy=-vy;
-            break;
-
+            level+=2;
+            visible=false;
+            guy.visible=true;
+            guy.setPosition(450,350);
         }
+        vis=false;
+        vi=false;
+
     }
-
-
 }
 
-bool Elementy::balon_bohater(Elementy & a,int b, bool red)
+TutorialButton::TutorialButton()
 {
-    sf::FloatRect abounds = a.getGlobalBounds();
-    sf::FloatRect bounds = getGlobalBounds();
-
-    if(bounds.intersects(abounds)&&b==1)
-    {
-        vx=-vx;
-
-        move(vx,vy);
-        if(red==true&&a.color>2)
-        {
-            a.color-=4;
-            a.setColor(sf::Color(255,a.color,a.color,255));
-        }
-        return true;
-    }
-    if(bounds.intersects(abounds)&&b==2)
-    {
-        move(-vx,-vy);
-        vx=-vx;
-        vy=-vy;
-    }
-
-
-    return false;
-
-}
-
-
-
-Title::Title()
-{
-    pokaz=true;
-    if (!tekstura.loadFromFile("tekst/title.png")) {
-        std::cout << "Could not load texture" << std::endl;
-    }
-    //tekstura.setRepeated(true);
-    scale(0.33,0.33);
-    setPosition(300,150);
-    setTexture(tekstura);
-}
-
-Tutorialbutton::Tutorialbutton()
-{
-    pokaz=true;
+    visible=true;
+    on =true;
     if (!tekstura.loadFromFile("tekst/tutorialon.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
@@ -243,118 +92,46 @@ Tutorialbutton::Tutorialbutton()
         std::cout << "Could not load sound" << std::endl;
     }
     click.setBuffer(buffer);
-
 }
 
-bool Elementy::zmien(sf::RenderWindow & window, sf::Event event)
+void TutorialButton::change(sf::Vector2i mousepos)
 {
-
-    if (event.type == sf::Event::MouseButtonPressed&&pokaz==true)
+    sf::FloatRect bounds = getGlobalBounds();
+    if(bounds.contains(mousepos.x, mousepos.y)&&visible==true)
     {
-        if(event.mouseButton.button == sf::Mouse::Left)
+        click.play();
+        if(on==true)
         {
-            sf::FloatRect playbounds = getGlobalBounds();
-            sf::Vector2i mousepos = sf::Mouse::getPosition(window);
-
-            std::cout << mousepos.x << std::endl;
-
-
-            if(playbounds.contains(mousepos.x,mousepos.y))
-            {
-
-                click.play();
-
-                Sleep(200);
-
-                if(active=='z')
-                {
-                    setTexture(tekstura2);
-                    active='c';
-                    typ=false;
-                }
-                else
-                {
-                    setTexture(tekstura);
-                    active='z';
-                    typ = true;
-                }
-            }
+            on = false;
+            setTexture(tekstura2);
+        }
+        else
+        {
+            on=true;
+            setTexture(tekstura);
         }
     }
-    return typ;
-
 }
 
-void Elementy::hurt(int face)
+Guy::Guy()
 {
-
-    if(face==0)
-    {
-        face=false;
-        setTextureRect(sf::IntRect(38, 10, 177, 197));
-    }
-
-    else if(face==1)
-    {
-        setTextureRect(sf::IntRect(420, 215, 175, 197));
-    }
-    else
-    {
-        setTextureRect(sf::IntRect(39, 214, 175, 197));
-    }
-
-
-
-}
-
-Hero::Hero()
-{
-    pokaz=false;
-    if (!tekstura.loadFromFile("tekst/face.png")) {
-        std::cout << "Could not load texture" << std::endl;
-    }
-    //tekstura.setRepeated(true);
-    setTextureRect(sf::IntRect(38, 10, 177, 197));
-    //scale(0.33,0.33);
-    setPosition(800,150);
-    setTexture(tekstura);
-
-}
-
-Manual::Manual()
-{
-    pokaz=false;
-    if (!tekstura.loadFromFile("tekst/manual.png")) {
-        std::cout << "Could not load texture" << std::endl;
-    }
-    //tekstura.setRepeated(true);
-    //setTextureRect(sf::IntRect(0, 0, 208, 208));
-    scale(0.45,0.30);
-    setPosition(30,30);
-    setTexture(tekstura);
-}
-
-Nextbutton::Nextbutton()
-{
-    pokaz=false;
-    if (!tekstura.loadFromFile("tekst/playbutton.png")) {
-        std::cout << "Could not load texture" << std::endl;
-    }
-    //tekstura.setRepeated(true);
-    scale(0.35,0.35);
-    setPosition(780,380);
-    setTexture(tekstura);
-
-
-    if (!buffer.loadFromFile("sound/click.wav"))
+    if (!buffer.loadFromFile("sound/shot.wav"))
     {
         std::cout << "Could not load sound" << std::endl;
     }
-    click.setBuffer(buffer);
+    sound.setBuffer(buffer);
+    visible = false;
+    if (!tekstura.loadFromFile("tekst/face.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    setTextureRect(sf::IntRect(38, 10, 177, 197));
+    setPosition(800,150);
+    setTexture(tekstura);
 }
 
 Wall::Wall(int w,int h,int x,int y)
 {
+
     if (!tekstura.loadFromFile("tekst/wall.png")) {
         std::cout << "Could not load texture" << std::endl;
     }
@@ -363,12 +140,9 @@ Wall::Wall(int w,int h,int x,int y)
 
     setPosition(x,y);
     setTextureRect(sf::IntRect(0,0,w,h));
-
-
-
 }
 
-Balon::Balon(int moc)
+Baloon::Baloon(int moc)
 {
     if (!teks.loadFromFile("tekst/balony.png")) {
         std::cout << "Could not load texture" << std::endl;
@@ -399,6 +173,8 @@ Balon::Balon(int moc)
         moving=2;
         setTextureRect(sf::IntRect(528,474,197,281));
         scale(0.5,0.5);
+        vx=0;
+        vy=0;
         power=2;
 
     }
@@ -409,18 +185,227 @@ Balon::Balon(int moc)
         setTextureRect(sf::IntRect(802,0,198,272));
         power=3;
     }
+}
+
+Baloon::Baloon()
+{
 
 }
 
+void Baloon::make(std::vector<std::unique_ptr<Baloon> > &vec)
+{
+    vec.emplace_back(std::make_unique<Baloon>(1));
+    vec.emplace_back(std::make_unique<Baloon>(2));
+    vec.emplace_back(std::make_unique<Baloon>(1));
+    vec.emplace_back(std::make_unique<Baloon>(3));
+}
+
+void Baloon::sprawdz(Guy & guy,  std::vector<std::unique_ptr<Baloon>>& vec, bool& vis)
+{
+    if(guy.balony==0)
+    {
+        float x = rand()%3+1;
+        float y = rand()%3+1;
+        float z = rand()%3+1;
+        float c = rand()%3+1;
+        vec.emplace_back(std::make_unique<Baloon>(x));
+        vec.emplace_back(std::make_unique<Baloon>(y));
+        vec.emplace_back(std::make_unique<Baloon>(z));
+        vec.emplace_back(std::make_unique<Baloon>(c));
+        guy.ammo=15;
+        guy.time=20;
+        guy.balony=4;
+        guy.level++;
+    }
+
+    else if(guy.ammo==0||guy.health==0||guy.time==0)
+    {
+        for(auto &el : vec)
+        {
+            el->usun=true;
+        }
+
+
+        guy.level=-2;
+        vis=true;
+        make(vec);
+    }
+    for(size_t i=0; i<vec.size(); i++)
+    {
+        if(vec[i]->usun==true)
+        {
+            vec.erase(vec.begin()+i);
+        }
+    }
+
+
+    std::cout << guy.ammo << " " << guy.health << " " << guy.time << " " << guy.level << std::endl;
+
+}
+
+void Baloon::kolizja(Elements & left, Elements& right, Elements& top, Elements& bottom)
+{
+    sf::FloatRect bounds = getGlobalBounds();
+    sf::FloatRect leftbounds = left.getGlobalBounds();
+    sf::FloatRect rightbounds = right.getGlobalBounds();
+    sf::FloatRect topbounds = top.getGlobalBounds();
+    sf::FloatRect bottombounds = bottom.getGlobalBounds();
+
+    if(bounds.intersects(leftbounds)||bounds.intersects(rightbounds))
+    {
+        vx=-vx;
+    }
+    if(bounds.intersects(topbounds)||bounds.intersects(bottombounds))
+    {
+        vy=-vy;
+    }
+
+}
+
+void Baloon::kolizja_bohater(Guy & a, int b, bool red, sf::Clock& facetime)
+{
+    sf::FloatRect abounds = a.getGlobalBounds();
+    sf::FloatRect bounds = getGlobalBounds();
+
+    if(bounds.intersects(abounds)&&b==1)
+    {
+        vx=-vx;
+        facetime.restart();
+
+        move(vx,vy);
+        if(red==true&&a.color>2)
+        {
+            a.color-=4;
+            a.setColor(sf::Color(255,a.color,a.color,255));
+        }
+
+        a.health --;
+        int g = rand()% 2;
+        if(g==0)
+            a.setTextureRect(sf::IntRect(39, 214, 175, 197));
+        else if(g==1)
+        {
+            a.setTextureRect(sf::IntRect(420, 215, 175, 197));
+        }
+
+
+    }
+    if(bounds.intersects(abounds)&&b==2)
+    {
+        move(-vx,-vy);
+        vx=-vx;
+        vy=-vy;
+    }
 
 
 
+}
+
+void Baloon::kolizja_balony(Baloon & a, int b)
+{
+    sf::FloatRect abounds = a.getGlobalBounds();
+    sf::FloatRect bounds = getGlobalBounds();
+
+    if(bounds.intersects(abounds)&&b==1)
+    {
+        vx=-vx;
+
+        move(vx,vy);
 
 
+    }
+    if(bounds.intersects(abounds)&&b==2)
+    {
+        move(-vx,-vy);
+        vx=-vx;
+        vy=-vy;
+    }
+
+}
+
+void Baloon::shoot(sf::Vector2i mousepos, Guy& guy, std::vector<std::unique_ptr<Baloon>>& vec)
+{
+    sf::FloatRect playbounds = getGlobalBounds();
+    guy.sound.play();
 
 
+    if(moving==1)
+    {
+
+        if(vx>0)
+        {
+            mousepos.x= mousepos.x-15;
+        }
+        else if(vx<0)
+        {
+            mousepos.x= mousepos.x+15;
+        }
+
+        if(vy>0)
+        {
+            mousepos.y= mousepos.y-15;
+        }
+        else if(vy<0)
+        {
+            mousepos.y= mousepos.y+15;
+        }
+    }
 
 
+    if(playbounds.contains(mousepos.x,mousepos.y))
+    {
+
+        if(power==1)
+        {
+            usun=true;
+            guy.balony--;
+        }
+        else if(power==2)
+        {
+            vec.emplace_back(std::make_unique<Baloon>(1));
+            usun=true;
+        }
+        else if(power==3)
+        {
+            vec.emplace_back(std::make_unique<Baloon>(2));
+            usun=true;
+        }
 
 
+        std::cout << "trafiony" << std::endl;
 
+    }
+}
+
+PlayAgainButton::PlayAgainButton()
+{
+    if (!tekstura.loadFromFile("tekst/playbutton.png")) {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    visible=false;
+    setPosition(430,500);
+    setScale(0.35,0.35);
+
+    setTexture(tekstura);
+
+    if (!buffer.loadFromFile("sound/click.wav"))
+    {
+        std::cout << "Could not load sound" << std::endl;
+    }
+    click.setBuffer(buffer);
+}
+
+void PlayAgainButton::press(sf::Vector2i mousepos, bool & vis, Guy & guy)
+{
+    sf::FloatRect bounds = getGlobalBounds();
+    if(bounds.contains(mousepos.x, mousepos.y)&&guy.level==-2)
+    {
+        click.play();
+        guy.level=1;
+        guy.ammo=15;
+        guy.time=20;
+        guy.balony=4;
+        guy.health=50;
+        vis=false;
+    }
+}
