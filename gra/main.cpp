@@ -14,6 +14,7 @@ int main()
 
     sf::Clock clock;
     sf::Clock clock2;
+    sf::Clock facetime;
     sf::Time time;
     float elapsed;
     float elapsedshot;
@@ -24,34 +25,35 @@ int main()
     {
         std::cout<< "bleeee:" << std::endl;
     }
+    int ammo=15;
+    int balony=4;
+    int czas=30;
+    int lvl=0;
+    int health=50;
 
-    sf::Text txtammo;
-    sf::Text txtlevel;
-    sf::Text txttime;
-    sf::Text txthealth;
-
-
-    txtammo.setFont(font);
-    txtammo.setCharacterSize(35);
+    auto texta = std::to_string(ammo);
+    sf::Text txtammo("ammo "+texta,font,35);
     txtammo.setFillColor(sf::Color::Black);
+    txtammo.setPosition(800,13);
     txtammo.setStyle(sf::Text::Bold);
-    txtlevel.setFont(font);
-    txtlevel.setCharacterSize(35);
-    txtlevel.setFillColor(sf::Color::Black);
-    txtlevel.setStyle(sf::Text::Bold);
-    txttime.setFont(font);
-    txttime.setCharacterSize(35);
-    txttime.setFillColor(sf::Color::Black);
-    txttime.setStyle(sf::Text::Bold);
-    txthealth.setFont(font);
-    txthealth.setCharacterSize(35);
-    txthealth.setFillColor(sf::Color::Black);
-    txthealth.setStyle(sf::Text::Bold);
 
-    txttime.setPosition(30,15);
-    txtlevel.setPosition(300,15);
-    txthealth.setPosition(500,15);
-    txtammo.setPosition(700,15);
+    auto textl = std::to_string(ammo);
+    sf::Text txtlevel("level "+textl,font,35);
+    txtlevel.setFillColor(sf::Color::Black);
+    txtlevel.setPosition(320,13);
+    txtlevel.setStyle(sf::Text::Bold);
+
+    auto textt = std::to_string(czas);
+    sf::Text txttime("time "+textt,font,35);
+    txttime.setFillColor(sf::Color::Black);
+    txttime.setPosition(60,13);
+    txttime.setStyle(sf::Text::Bold);
+
+    auto texth = std::to_string(health);
+    sf::Text txthealth("health "+texth,font,35);
+    txthealth.setFillColor(sf::Color::Black);
+    txthealth.setPosition(550,13);
+    txthealth.setStyle(sf::Text::Bold);
 
     sf::Sound sound;
     sf::SoundBuffer buffer;
@@ -64,11 +66,6 @@ int main()
 
     //Dzwiek shot("sound/shot.wav");
 
-    int ammo=15;
-    int balony=4;
-    int czas=45;
-    int lvl=0;
-    int health=50;
 
 
 
@@ -118,7 +115,7 @@ int main()
                     {
                            sound.play();
                         ammo--;
-                        auto texta = std::to_string(ammo);
+                        texta = std::to_string(ammo);
 
                         txtammo.setString("ammo "+texta);
 
@@ -183,11 +180,11 @@ int main()
             {
 
                 elementy[1]->pokaz=false;
-                elementy[2]->setPosition(400,400);
+                elementy[2]->setPosition(450,350);
                 elementy[3]->pokaz=false;
                 lvl=1;
 
-                auto textl = std::to_string(lvl);
+                textl = std::to_string(lvl);
 
                 txtlevel.setString("level: "+textl);
             }
@@ -201,7 +198,7 @@ int main()
         {
             clock2.restart();
             czas--;
-            auto textt = std::to_string(czas);
+            textt = std::to_string(czas);
 
 
             txttime.setString("time: " + textt);
@@ -215,35 +212,26 @@ int main()
             level1.emplace_back(std::make_unique<Balon>(3));
             level1.emplace_back(std::make_unique<Balon>(3));
             balony=4;
-            czas=45;
+            czas=30;
             lvl++;
             ammo=15;
 
-            auto textt = std::to_string(czas);
+            textt = std::to_string(czas);
             txttime.setString("time " + textt);
-            auto textl = std::to_string(lvl);
-            txttime.setString("level " + textl);
-            auto texta = std::to_string(ammo);
-            txttime.setString("ammo " + texta);
-            auto texth = std::to_string(health);
+            textl = std::to_string(lvl);
+            txtlevel.setString("level " + textl);
+            texta = std::to_string(ammo);
+            txtammo.setString("ammo " + texta);
+            texth = std::to_string(health);
             txthealth.setString("helath " + texth);
 
-            Sleep(100);
+
         }
 
 
         elapsed = clock.getElapsedTime().asSeconds();
         elapsedshot = clock2.getElapsedTime().asSeconds();
-        // std::cout<< ammo << " " << czas <<" " << balony <<  std::endl;
-
-
-        // Hero &boh = dynamic_cast<Hero &>(*elementy[2]);
-
-
         window.clear(sf::Color::Black);
-
-
-
 
         for(auto &el:elementy)
         {
@@ -266,8 +254,10 @@ int main()
 
                 if(el->balon_bohater(*elementy[2],1,true))
                 {
+                    elementy[2]->face=rand()%2+1;
+                    facetime.restart();
                     health--;
-                    auto texth = std::to_string(health);
+                    texth = std::to_string(health);
                     txthealth.setString("helath " + texth);
                 }
                 el->balon_bohater(*elementy[2],2,false);
@@ -282,6 +272,10 @@ int main()
                 }
 
             }
+            float passed =facetime.getElapsedTime().asSeconds();
+            if(passed>=0.25)
+                elementy[2]->face=0;
+            elementy[2]->hurt(elementy[2]->face);
 
             for(auto &el : sciany)
             {
@@ -291,13 +285,10 @@ int main()
             {
                 window.draw(*el);
             }
-
                 window.draw(txtammo);
                 window.draw(txtlevel);
                 window.draw(txttime);
                 window.draw(txthealth);
-
-
         }
 
         if(ammo==0||czas==0||health==0)

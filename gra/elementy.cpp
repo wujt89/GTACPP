@@ -78,29 +78,7 @@ bool Elementy::schowaj(sf::RenderWindow &window, sf::Event event)
 
 void Elementy::ruch()
 {
-    if(predkosc==1&&vx<=0)
-    {
-        vx=vy=(rand()%4)/100;
-        move(-vx,vy);
-    }
-    else if(predkosc==1&&vy<=0)
-    {
-        vx=vy=(rand()%4)/100;
-        move(vx,-vy);
-    }
-    else if(predkosc==1&&vy<=0&&vx<=0)
-    {
-        vx=vy=(rand()%4)/100;
-        move(-vx,-vy);
-    }
-    else if(predkosc==1&&vy>=0&&vx>=0)
-    {
-        vx=vy=(rand()%4)/100;
-        move(vx,vy);
-    }
-
-    else
-        move(vx,vy);
+    move(vx,vy);
 }
 
 bool Elementy::kol(Elementy &a)
@@ -119,53 +97,53 @@ bool Elementy::kol(Elementy &a)
 int Elementy::shoot(sf::Vector2i mousepos)
 {
 
-            sf::FloatRect playbounds = getGlobalBounds();
+    sf::FloatRect playbounds = getGlobalBounds();
+
+    if(moving==1)
+    {
+
+        if(vx>0)
+        {
+            mousepos.x= mousepos.x-15;
+        }
+        else if(vx<0)
+        {
+            mousepos.x= mousepos.x+15;
+        }
+
+        if(vy>0)
+        {
+            mousepos.y= mousepos.y-15;
+        }
+        else if(vy<0)
+        {
+            mousepos.y= mousepos.y+15;
+        }
+    }
 
 
+    if(playbounds.contains(mousepos.x,mousepos.y))
+    {
 
-            shot.play();
+        if(power==1)
+        {
+            return 1;
+        }
+        else if(power==2)
+        {
+            return 2;
+        }
+        else if(power==3)
+        {
+            return 3;
+        }
 
-            if(vx>0)
-            {
-                mousepos.x= mousepos.x-15;
-            }
-            else if(vx<0)
-            {
-                mousepos.x= mousepos.x+15;
-            }
+        else
+            return 4;
 
-            if(vy>0)
-            {
-                mousepos.y= mousepos.y-15;
-            }
-            else if(vy<0)
-            {
-                mousepos.y= mousepos.y+15;
-            }
+        std::cout << "trafiony" << std::endl;
 
-
-            if(playbounds.contains(mousepos.x,mousepos.y))
-            {
-
-                if(power==1)
-                {
-                    return 1;
-                }
-                else if(power==2)
-                {
-                    return 2;
-                }
-                else if(power==3)
-                {
-                    return 3;
-                }
-
-                else
-                    return 4;
-
-                std::cout << "trafiony" << std::endl;
-
-            }
+    }
 
 
     return 0;
@@ -174,30 +152,30 @@ int Elementy::shoot(sf::Vector2i mousepos)
 void Elementy::change(sf::Vector2i mousepos)
 {
 
-        sf::FloatRect elbounds = getGlobalBounds();
+    sf::FloatRect elbounds = getGlobalBounds();
 
-        if(elbounds.contains(mousepos.x, mousepos.y))
+    if(elbounds.contains(mousepos.x, mousepos.y))
+    {
+        int los=rand()%3;
+        // std::cout<< los << std::endl;
+        switch(los)
         {
-            int los=rand()%3;
-            // std::cout<< los << std::endl;
-            switch(los)
-            {
-            case 0:
-                vx=-vx;
-                break;
+        case 0:
+            vx=-vx;
+            break;
 
-            case 1:
-                vy=-vy;
-                break;
+        case 1:
+            vy=-vy;
+            break;
 
 
-            case 2:
-                vx=-vx;
-                vy=-vy;
-                break;
+        case 2:
+            vx=-vx;
+            vy=-vy;
+            break;
 
-            }
         }
+    }
 
 
 }
@@ -227,7 +205,7 @@ bool Elementy::balon_bohater(Elementy & a,int b, bool red)
     }
 
 
-return false;
+    return false;
 
 }
 
@@ -307,6 +285,28 @@ bool Elementy::zmien(sf::RenderWindow & window, sf::Event event)
 
 }
 
+void Elementy::hurt(int face)
+{
+
+    if(face==0)
+    {
+        face=false;
+        setTextureRect(sf::IntRect(38, 10, 177, 197));
+    }
+
+    else if(face==1)
+    {
+        setTextureRect(sf::IntRect(420, 215, 175, 197));
+    }
+    else
+    {
+        setTextureRect(sf::IntRect(39, 214, 175, 197));
+    }
+
+
+
+}
+
 Hero::Hero()
 {
     pokaz=false;
@@ -314,9 +314,9 @@ Hero::Hero()
         std::cout << "Could not load texture" << std::endl;
     }
     //tekstura.setRepeated(true);
-    setTextureRect(sf::IntRect(0, 0, 208, 208));
+    setTextureRect(sf::IntRect(38, 10, 177, 197));
     //scale(0.33,0.33);
-    setPosition(750,150);
+    setPosition(800,150);
     setTexture(tekstura);
 
 }
@@ -395,9 +395,10 @@ Balon::Balon(int moc)
     }
     else if(moc==2)
     {
-        predkosc=1;
-        vx=vy=(rand()%4)/100;
+
+        moving=2;
         setTextureRect(sf::IntRect(528,474,197,281));
+        scale(0.5,0.5);
         power=2;
 
     }

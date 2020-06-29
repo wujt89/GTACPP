@@ -8,6 +8,7 @@
 #include <vector>
 #include <windows.h>
 #include <algorithm>
+//#include <Text.hpp>
 
 
 
@@ -16,6 +17,8 @@ class Elementy : public sf::Sprite
 {
 public:
     bool pokaz;
+    int face=0;
+    void hurt(int);
 
     void hide();
     void show();
@@ -36,7 +39,8 @@ public:
     void ruch();
     float vx;
     float vy;
-    int predkosc;
+    int moving=1;
+
 
 
     bool kol(Elementy&);
@@ -116,10 +120,9 @@ public:
 class Hero : public Elementy
 {
     sf::Texture tekstura;
-public:
-    int health;
 
-    sf::SoundBuffer buffer;
+public:
+    int health;  
 
     Hero();
 };
