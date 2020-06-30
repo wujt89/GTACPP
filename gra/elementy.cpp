@@ -222,8 +222,8 @@ Baloon::Baloon(int moc)
     if(moc==1)
     {
         setTextureRect(sf::IntRect(522,0,204,273));
-        vx=0.1;
-        vy=0.1;
+        vx=0.182;
+        vy=0.182;
         power=1;
 
 
@@ -241,8 +241,8 @@ Baloon::Baloon(int moc)
     }
     else if(moc==3)
     {
-        vx=0.2;
-        vy=0.2;
+        vx=0.3;
+        vy=0.3;
         setTextureRect(sf::IntRect(802,0,198,272));
         power=3;
     }
