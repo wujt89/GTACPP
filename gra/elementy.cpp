@@ -439,6 +439,36 @@ void Baloon::shoot(sf::Vector2i mousepos, Guy& guy, std::vector<std::unique_ptr<
     }
 }
 
+void Baloon::aiming(sf::Event event, sf::Vector2i mousepos)
+{
+    if (event.type == sf::Event::MouseMoved)
+    {
+
+        sf::FloatRect elbounds = getGlobalBounds();
+
+        if(elbounds.contains(mousepos.x, mousepos.y))
+        {
+            int los=rand()%3;
+            // std::cout<< los << std::endl;
+            switch(los)
+            {
+            case 0:
+                vx=-vx;
+                break;
+            case 1:
+                vy=-vy;
+                break;
+            case 2:
+                vx=-vx;
+                vy=-vy;
+                break;
+            }
+        }
+    }
+}
+
+
+
 PlayAgainButton::PlayAgainButton()
 {
     if (!tekstura.loadFromFile("tekst/playbutton.png")) {

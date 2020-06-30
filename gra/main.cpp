@@ -11,6 +11,7 @@ int main()
 
     sf::Clock facetime;
     sf::Clock life;
+    sf::Clock aim;
 
 
 
@@ -42,11 +43,12 @@ int main()
     while (window.isOpen())
     {
         while (window.pollEvent(event)) {
+            sf::Vector2i mousepos = sf::Mouse::getPosition(window);
             if (event.type == sf::Event::Closed)
                 window.close();
             if (event.type == sf::Event::MouseButtonPressed)
             {
-                sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+
                 if(event.mouseButton.button == sf::Mouse::Left&&guy.level>0)
                 {
                     guy.ammo--;
@@ -60,6 +62,19 @@ int main()
                 play.press(mousepos, guy.level, tut.on, tut.visible, statyczne[1]->visible,statyczne[2]->visible, guy);
                 playa.press(mousepos, statyczne[3]->visible,guy);
             }
+            if(aim.getElapsedTime().asSeconds()<0.45)
+            {
+                if (event.type == sf::Event::MouseMoved)
+                {
+
+                    for(auto &el : balony)
+                    {
+                        el->aiming(event, mousepos);
+                    }
+
+                }
+            }
+            aim.restart();
         }
         float elapsedshot = life.getElapsedTime().asSeconds();
         if(elapsedshot>1&&guy.level>=1)
@@ -88,7 +103,7 @@ int main()
         if(guy.level==-2)
         {
             window.draw(playa);
-           guy.drawend(window);
+            guy.drawend(window);
         }
         if(guy.level>0)
         {

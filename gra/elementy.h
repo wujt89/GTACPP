@@ -108,12 +108,14 @@ public:
     int power;
     bool usun =false;
 
+
     void make(std::vector<std::unique_ptr<Baloon>>& vec);
     void sprawdz(Guy&, std::vector<std::unique_ptr<Baloon>>& vec, bool&);
     void kolizja(Elements&, Elements&, Elements&, Elements&);
     void kolizja_bohater(Guy&,int,bool, sf::Clock &);
     void kolizja_balony(Baloon&,int);
     void shoot(sf::Vector2i, Guy&, std::vector<std::unique_ptr<Baloon>>& vec);
+    void aiming(sf::Event event, sf::Vector2i mousepos);
 };
 
 class PlayAgainButton : public Elements
