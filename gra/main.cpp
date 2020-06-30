@@ -18,7 +18,7 @@ int main()
     std::vector<std::unique_ptr<StaticObject>> statyczne;
     statyczne.emplace_back(std::make_unique<StaticObject>(0,0,1,1,"tekst/miasto.png", true));
     statyczne.emplace_back(std::make_unique<StaticObject>(300,150,0.33,0.33,"tekst/title.png", true));
-    statyczne.emplace_back(std::make_unique<StaticObject>(30,30,0.45,0.3,"tekst/manual.png", false));
+    statyczne.emplace_back(std::make_unique<StaticObject>(30,30,0.3,0.3,"tekst/manualfirst.png", false));
     statyczne.emplace_back(std::make_unique<StaticObject>(300,250,0.2,0.15,"tekst/manual.png", false));
 
     PlayButton play;
