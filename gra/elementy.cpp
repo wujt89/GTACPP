@@ -127,6 +127,67 @@ Guy::Guy()
     setTextureRect(sf::IntRect(38, 10, 177, 197));
     setPosition(800,150);
     setTexture(tekstura);
+
+    font.loadFromFile("ADVENTURE.otf");
+
+    txtammo.setFont(font);
+    txtammo.setCharacterSize(35);
+    txtammo.setFillColor(sf::Color::Black);
+    txtammo.setPosition(800,13);
+    txtammo.setStyle(sf::Text::Bold);
+    texta = std::to_string(ammo);
+    txtammo.setString("ammo: "+texta);
+    txtlevel.setFont(font);
+    txtlevel.setCharacterSize(35);
+    txtlevel.setFillColor(sf::Color::Black);
+    txtlevel.setPosition(320,13);
+    txtlevel.setStyle(sf::Text::Bold);
+    texta = std::to_string(level);
+    txtlevel.setString("ammo: "+texta);
+    txthealth.setFont(font);
+    txthealth.setCharacterSize(35);
+    txthealth.setFillColor(sf::Color::Black);
+    txthealth.setPosition(550,13);
+    txthealth.setStyle(sf::Text::Bold);
+    texta = std::to_string(health);
+    txthealth.setString("ammo: "+texta);
+    txttime.setFont(font);
+    txttime.setCharacterSize(35);
+    txttime.setFillColor(sf::Color::Black);
+    txttime.setPosition(60,13);
+    txttime.setStyle(sf::Text::Bold);
+    texta = std::to_string(time);
+    txttime.setString("ammo: "+texta);
+    txtend.setFont(font);
+    txtend.setCharacterSize(35);
+    txtend.setFillColor(sf::Color::Black);
+    txtend.setPosition(390,370);
+    txtend.setStyle(sf::Text::Bold);
+
+}
+
+void Guy::update(sf::RenderWindow &window)
+{
+    texta = std::to_string(ammo);
+    txtammo.setString("ammo: "+texta);
+    texta = std::to_string(level);
+    txtlevel.setString("level: "+texta);
+    texta = std::to_string(time);
+    txttime.setString("time: "+texta);
+    texta = std::to_string(health);
+    txthealth.setString("health: "+texta);
+
+    window.draw(txtammo);
+    window.draw(txtlevel);
+    window.draw(txttime);
+    window.draw(txthealth);
+}
+
+void Guy::drawend(sf::RenderWindow &window)
+{
+    texta = std::to_string(memorylevel);
+    txtend.setString("Twoj wynik to: "+texta);
+    window.draw(txtend);
 }
 
 Wall::Wall(int w,int h,int x,int y)
@@ -153,16 +214,16 @@ Baloon::Baloon(int moc)
     scale(0.3,0.3);
 
     if(los==0)
-        setPosition(std::rand() % 150 +20, std::rand() % 500 + 60);
+        setPosition(std::rand() % 150 +20, std::rand() % 500 + 90);
 
     if(los==1)
-        setPosition(std::rand() % 150 +800, std::rand() % 500 + 60);
+        setPosition(std::rand() % 150 +700, std::rand() % 500 + 90);
 
     if(moc==1)
     {
         setTextureRect(sf::IntRect(522,0,204,273));
-        vx=0.05;
-        vy=0.05;
+        vx=0.1;
+        vy=0.1;
         power=1;
 
 
@@ -180,8 +241,8 @@ Baloon::Baloon(int moc)
     }
     else if(moc==3)
     {
-        vx=0.1;
-        vy=0.1;
+        vx=0.2;
+        vy=0.2;
         setTextureRect(sf::IntRect(802,0,198,272));
         power=3;
     }
@@ -216,16 +277,17 @@ void Baloon::sprawdz(Guy & guy,  std::vector<std::unique_ptr<Baloon>>& vec, bool
         guy.time=20;
         guy.balony=4;
         guy.level++;
+        guy.bonus+=0.5;
     }
 
-    else if(guy.ammo==0||guy.health==0||guy.time==0)
+    else if((guy.ammo==0||guy.health==0||guy.time==0)&&guy.level!=-2)
     {
         for(auto &el : vec)
         {
             el->usun=true;
         }
 
-
+        guy.memorylevel=guy.level;
         guy.level=-2;
         vis=true;
         make(vec);
@@ -383,7 +445,7 @@ PlayAgainButton::PlayAgainButton()
         std::cout << "Could not load texture" << std::endl;
     }
     visible=false;
-    setPosition(430,500);
+    setPosition(420,470);
     setScale(0.35,0.35);
 
     setTexture(tekstura);
@@ -407,5 +469,21 @@ void PlayAgainButton::press(sf::Vector2i mousepos, bool & vis, Guy & guy)
         guy.balony=4;
         guy.health=50;
         vis=false;
+        guy.bonus=1;
+        guy.color=204;
+        guy.setColor(sf::Color(255,255,255,255));
     }
+}
+
+Texty::Texty(float x, float y)
+{
+    if (!font.loadFromFile("ADVENTURE.otf"))
+    {
+        std::cout<< "bleeee:" << std::endl;
+    }
+    text.setFont(font);
+    text.setCharacterSize(35);
+    text.setPosition(x,y);
+    text.setFillColor(sf::Color::Black);
+
 }

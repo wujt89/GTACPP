@@ -4,12 +4,14 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+//#include <SFML/Text.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <memory>
 #include <vector>
 #include <windows.h>
 #include <algorithm>
+#include <string>
 
 
 class Elements : public sf::Sprite
@@ -58,16 +60,29 @@ class Guy : public Elements
 {
     sf::Texture tekstura;
     sf::SoundBuffer buffer;
+    sf::Font font;
+    sf::Text txtammo;
+    sf::Text txtlevel;
+    sf::Text txthealth;
+    sf::Text txttime;
+    sf::Text txtend;
+    std::string texta;
 
 public:
+
+
     int level= -1;
+    int memorylevel=0;
     int ammo=15;
     int health=50;
     int balony=4;
     int time =20;
+    int bonus=1;
     Guy();
     int color=204;
     sf::Sound sound;
+    void update(sf::RenderWindow &window);
+    void drawend(sf::RenderWindow &window);
 
 };
 
@@ -111,6 +126,15 @@ public:
     PlayAgainButton();
     void press(sf::Vector2i mousepos, bool &, Guy &);
 
+
+};
+
+class Texty : public Elements
+{
+    sf::Font font;
+public:
+    Texty(float x, float y);
+    sf::Text text;
 
 };
 

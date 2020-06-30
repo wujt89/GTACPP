@@ -14,11 +14,12 @@ int main()
 
 
 
+
     std::vector<std::unique_ptr<StaticObject>> statyczne;
     statyczne.emplace_back(std::make_unique<StaticObject>(0,0,1,1,"tekst/miasto.png", true));
     statyczne.emplace_back(std::make_unique<StaticObject>(300,150,0.33,0.33,"tekst/title.png", true));
     statyczne.emplace_back(std::make_unique<StaticObject>(30,30,0.45,0.3,"tekst/manual.png", false));
-    statyczne.emplace_back(std::make_unique<StaticObject>(400,250,0.1,0.07,"tekst/manual.png", false));
+    statyczne.emplace_back(std::make_unique<StaticObject>(300,250,0.2,0.15,"tekst/manual.png", false));
 
     PlayButton play;
     TutorialButton tut;
@@ -76,20 +77,30 @@ int main()
             if(el->visible==true)
                 window.draw(*el);
         }
-        if(play.visible==true) window.draw(play);
-        if(tut.visible==true) window.draw(tut);
-        if(guy.level==-2) window.draw(playa);
-        if(guy.visible==true&&guy.level>=0) window.draw(guy);
         for(auto &el : sciany)
         {
             if(guy.level>0)
                 window.draw(*el);
         }
+
+        if(play.visible==true) window.draw(play);
+        if(tut.visible==true) window.draw(tut);
+        if(guy.level==-2)
+        {
+            window.draw(playa);
+           guy.drawend(window);
+        }
+        if(guy.level>0)
+        {
+            window.draw(guy);
+            guy.update(window);
+        }
+
         for(auto &el : balony)
         {
             if(guy.level>0)
             {
-                el->move(el->vx,el->vy);
+                el->move(el->vx*guy.bonus,el->vy*guy.bonus);
                 el->kolizja(*sciany[0], *sciany[1], *sciany[2], *sciany[3]);
                 el->kolizja_bohater(guy,1,true, facetime);
                 el->kolizja_bohater(guy,2,false, facetime);
