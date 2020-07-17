@@ -68,7 +68,7 @@ void Baloon::sprawdz(Guy& guy,  std::vector<std::unique_ptr<Baloon>>& vec, bool&
     int balonyy = guy.getbalony();
     int ammoo = guy.getammo();
     int timee = guy.gettime();
-   // int levell = guy.getlevel();
+    // int levell = guy.getlevel();
     int bonuss = guy.getbonus();
     int healthh = guy.gethealth();
 
@@ -88,7 +88,7 @@ void Baloon::sprawdz(Guy& guy,  std::vector<std::unique_ptr<Baloon>>& vec, bool&
         guy.settime(timee);
         balonyy=4;
         guy.setbalony(balonyy);
-       guy.level++;
+        guy.level++;
         bonuss+=0.5;
         guy.setbonus(bonuss);
     }
@@ -115,7 +115,7 @@ void Baloon::sprawdz(Guy& guy,  std::vector<std::unique_ptr<Baloon>>& vec, bool&
         }
     }
 
-//std::cout << guy.ammo << " " << guy.health << " " << guy.time << " " << guy.level << std::endl;
+    //std::cout << guy.ammo << " " << guy.health << " " << guy.time << " " << guy.level << std::endl;
 
 }
 
@@ -143,64 +143,64 @@ void Baloon::kolizja_(Guy& guy, Elements & a, int b, bool red, sf::Clock& faceti
     sf::FloatRect abounds = a.getGlobalBounds();
     sf::FloatRect bounds = getGlobalBounds();
 
-if(typeid(a).hash_code()==typeid(Guy).hash_code())
-{
-    if(bounds.intersects(abounds)&&b==1)
+    if(typeid(a).hash_code()==typeid(Guy).hash_code())
     {
-        vx=-vx;
-        facetime.restart();
-
-        move(vx,vy);
-        int colorr = guy.getcolor();
-        if(red==true&&colorr>2)
+        if(bounds.intersects(abounds)&&b==1)
         {
-            colorr-=4;
-            a.setColor(sf::Color(255,colorr,colorr,255));
-            guy.setcolor(colorr);
+            vx=-vx;
+            facetime.restart();
+
+            move(vx,vy);
+            int colorr = guy.getcolor();
+            if(red==true&&colorr>2)
+            {
+                colorr-=4;
+                a.setColor(sf::Color(255,colorr,colorr,255));
+                guy.setcolor(colorr);
+            }
+
+            int healthh = guy.gethealth();
+            healthh --;
+            guy.sethealth(healthh);
+
+            int g = rand()% 2;
+            if(g==0)
+                a.setTextureRect(sf::IntRect(39, 214, 175, 197));
+            else if(g==1)
+            {
+                a.setTextureRect(sf::IntRect(420, 215, 175, 197));
+            }
+            // }
+
+
+        }
+        if(bounds.intersects(abounds)&&b==2)
+        {
+            move(-vx,-vy);
+            vx=-vx;
+            vy=-vy;
+        }
+    }
+
+    else
+    {
+        if(bounds.intersects(abounds)&&b==1)
+        {
+            vx=-vx;
+
+            move(vx,vy);
+
+
+        }
+        if(bounds.intersects(abounds)&&b==2)
+        {
+            move(-vx,-vy);
+            vx=-vx;
+            vy=-vy;
         }
 
-        int healthh = guy.gethealth();
-        healthh --;
-        guy.sethealth(healthh);
-
-        int g = rand()% 2;
-        if(g==0)
-            a.setTextureRect(sf::IntRect(39, 214, 175, 197));
-        else if(g==1)
-        {
-            a.setTextureRect(sf::IntRect(420, 215, 175, 197));
-        }
-   // }
-
 
     }
-    if(bounds.intersects(abounds)&&b==2)
-    {
-        move(-vx,-vy);
-        vx=-vx;
-        vy=-vy;
-    }
-}
-
-else
-{
-    if(bounds.intersects(abounds)&&b==1)
-    {
-        vx=-vx;
-
-        move(vx,vy);
-
-
-    }
-    if(bounds.intersects(abounds)&&b==2)
-    {
-        move(-vx,-vy);
-        vx=-vx;
-        vy=-vy;
-    }
-
-
-}
 
 
 }

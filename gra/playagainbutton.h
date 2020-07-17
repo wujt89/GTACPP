@@ -12,7 +12,7 @@ class PlayAgainButton : public Elements
 
 public:
 
- void press(sf::Vector2i mousepos, bool &, Guy &);
+    void press(sf::Vector2i mousepos, bool &, Guy &);
     PlayAgainButton();
 
 
