@@ -27,7 +27,7 @@ class Guy : public Elements
 
 public:
 
-    int level= -1;
+
     int getcolor(){return color;};
     void setcolor(int b){color=b;};
     int getlevel(){return level;};
@@ -44,7 +44,7 @@ public:
     void settime(int b){time=b;};
     int getbonus(){return bonus;};
     void setbonus(int b){bonus=b;};
-
+    int level= -1;
     void drawend(sf::RenderWindow &window);
     void update(sf::RenderWindow &window, int);
     Guy();

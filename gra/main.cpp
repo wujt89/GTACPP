@@ -145,19 +145,17 @@ int main()
             {
                 float vxx=el->getvx();
                 float vyy=el->getvy();
-                //el->setvx(vxx);
-               // el->setvy(vyy);
                 el->move(vxx*bonuss,vyy*bonuss);
                 el->kolizja(*sciany[0], *sciany[1], *sciany[2], *sciany[3]);
-                el->kolizja_bohater(guy,1,true, facetime);
-                el->kolizja_bohater(guy,2,false, facetime);
+                el->kolizja_(guy, guy,1,true, facetime);
+                el->kolizja_(guy, guy,2,false, facetime);
 
                 for(size_t i=0; i<balony.size();i++)
                 {
                     if(el!=balony[i])
                     {
-                        el->kolizja_balony(*balony[i],1);
-                        el->kolizja_balony(*balony[i],2);
+                        el->kolizja_(guy, *balony[i],1, false,facetime);
+                        el->kolizja_(guy, *balony[i],2, false, facetime);
                     }
                 }
 

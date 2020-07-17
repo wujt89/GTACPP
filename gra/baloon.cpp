@@ -138,31 +138,30 @@ void Baloon::kolizja(Elements & left, Elements& right, Elements& top, Elements& 
 
 }
 
-void Baloon::kolizja_bohater(Guy & a, int b, bool red, sf::Clock& facetime)
+void Baloon::kolizja_(Guy& guy, Elements & a, int b, bool red, sf::Clock& facetime)
 {
     sf::FloatRect abounds = a.getGlobalBounds();
     sf::FloatRect bounds = getGlobalBounds();
 
-    //Guy *bal = dynamic_cast<Guy *>(a.get());
-    //if (bal != nullptr)
-//{
+if(typeid(a).hash_code()==typeid(Guy).hash_code())
+{
     if(bounds.intersects(abounds)&&b==1)
     {
         vx=-vx;
         facetime.restart();
 
         move(vx,vy);
-        int colorr = a.getcolor();
+        int colorr = guy.getcolor();
         if(red==true&&colorr>2)
         {
             colorr-=4;
             a.setColor(sf::Color(255,colorr,colorr,255));
-            a.setcolor(colorr);
+            guy.setcolor(colorr);
         }
 
-        int healthh = a.gethealth();
+        int healthh = guy.gethealth();
         healthh --;
-        a.sethealth(healthh);
+        guy.sethealth(healthh);
 
         int g = rand()% 2;
         if(g==0)
@@ -181,16 +180,10 @@ void Baloon::kolizja_bohater(Guy & a, int b, bool red, sf::Clock& facetime)
         vx=-vx;
         vy=-vy;
     }
-
-
-
 }
 
-void Baloon::kolizja_balony(Baloon & a, int b)
+else
 {
-    sf::FloatRect abounds = a.getGlobalBounds();
-    sf::FloatRect bounds = getGlobalBounds();
-
     if(bounds.intersects(abounds)&&b==1)
     {
         vx=-vx;
@@ -206,7 +199,12 @@ void Baloon::kolizja_balony(Baloon & a, int b)
         vy=-vy;
     }
 
+
 }
+
+
+}
+
 
 void Baloon::shoot(sf::Vector2i mousepos, Guy& guy, std::vector<std::unique_ptr<Baloon>>& vec)
 {

@@ -20,8 +20,7 @@ public:
     float getvx(){return vx;};
     float getvy(){return vy;};
     void kolizja(Elements&, Elements&, Elements&, Elements&);
-    void kolizja_bohater(Guy&,int,bool, sf::Clock &);
-    void kolizja_balony(Baloon&,int);
+    void kolizja_(Guy&, Elements&,int,bool, sf::Clock &);
     void aiming(sf::Event event, sf::Vector2i mousepos);
     void shoot(sf::Vector2i, Guy&, std::vector<std::unique_ptr<Baloon>>& vec);
     void sprawdz(Guy&, std::vector<std::unique_ptr<Baloon>>& vec, bool&);
