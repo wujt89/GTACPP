@@ -1,0 +1,10 @@
+release/StaticObject.o
+release/baloon.o
+release/elementy.o
+release/guy.o
+release/main.o
+release/playagainbutton.o
+release/playbutton.o
+release/texty.o
+release/tutorialbutton.o
+release/wall.o

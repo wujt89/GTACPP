@@ -6,8 +6,16 @@ CONFIG -= qt
 INCLUDEPATH += "C:\Users\wujt8989\Desktop\SFML-2.5.1\include"
 
 SOURCES += \
+        StaticObject.cpp \
+        baloon.cpp \
         elementy.cpp \
-        main.cpp
+        guy.cpp \
+        main.cpp \
+        playagainbutton.cpp \
+        playbutton.cpp \
+        texty.cpp \
+        tutorialbutton.cpp \
+        wall.cpp
 
 LIBS += -L"C:\Users\wujt8989\Desktop\SFML-2.5.1\lib"
 CONFIG(debug, debug|release){
@@ -17,4 +25,12 @@ CONFIG(debug, debug|release){
 }
 
 HEADERS += \
-    elementy.h
+    StaticObject.h \
+    baloon.h \
+    elementy.h \
+    guy.h \
+    playagainbutton.h \
+    playbutton.h \
+    texty.h \
+    tutorialbutton.h \
+    wall.h

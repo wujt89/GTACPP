@@ -1,0 +1,10 @@
+debug/StaticObject.o
+debug/baloon.o
+debug/elementy.o
+debug/guy.o
+debug/main.o
+debug/playagainbutton.o
+debug/playbutton.o
+debug/texty.o
+debug/tutorialbutton.o
+debug/wall.o

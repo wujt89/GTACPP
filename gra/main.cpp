@@ -1,4 +1,12 @@
 #include "elementy.h"
+#include "StaticObject.h"
+#include "playbutton.h"
+#include "tutorialbutton.h"
+#include "texty.h"
+#include "playagainbutton.h"
+#include "wall.h"
+#include "baloon.h"
+#include "guy.h"
 
 using namespace std;
 
@@ -42,6 +50,14 @@ int main()
 
     while (window.isOpen())
     {
+        bool vtut = tut.getvisible();
+        bool vs1 = statyczne[1]->getvisible();
+        bool vs2 = statyczne[2]->getvisible();
+        bool vs3 = statyczne[3]->getvisible();
+        bool vplay = play.getvisible();
+        bool ontut = tut.geton();
+        int bonuss = guy.getbonus();
+
         while (window.pollEvent(event)) {
             sf::Vector2i mousepos = sf::Mouse::getPosition(window);
             if (event.type == sf::Event::Closed)
@@ -51,16 +67,25 @@ int main()
 
                 if(event.mouseButton.button == sf::Mouse::Left&&guy.level>0)
                 {
-                    guy.ammo--;
+                    guy.update(window,1);
                     for(auto &el : balony)
                     {
                         el->shoot(mousepos, guy, balony);
                     }
 
                 }
+
                 tut.change(mousepos);
-                play.press(mousepos, guy.level, tut.on, tut.visible, statyczne[1]->visible,statyczne[2]->visible, guy);
-                playa.press(mousepos, statyczne[3]->visible,guy);
+
+
+                play.press(mousepos, guy.level, ontut, vtut, vs1,vs2, guy);
+                playa.press(mousepos, vs3, guy);
+                tut.setvisible(vtut);
+                statyczne[1]->setvisible(vs1);
+                statyczne[2]->setvisible(vs2);
+                statyczne[3]->setvisible(vs3);
+
+
             }
             if(aim.getElapsedTime().asSeconds()<0.45)
             {
@@ -80,16 +105,19 @@ int main()
         if(elapsedshot>1&&guy.level>=1)
         {
             life.restart();
-            guy.time--;
+            guy.update(window,2);
 
         }
-        check.sprawdz(guy, balony, statyczne[3]->visible);
+        check.sprawdz(guy, balony, vs3);
+        statyczne[3]->setvisible(vs3);
+
 
 
         window.clear(sf::Color::Black);
         for(auto &el : statyczne)
         {
-            if(el->visible==true)
+            bool vel = el->getvisible();
+            if(vel==true)
                 window.draw(*el);
         }
         for(auto &el : sciany)
@@ -98,8 +126,8 @@ int main()
                 window.draw(*el);
         }
 
-        if(play.visible==true) window.draw(play);
-        if(tut.visible==true) window.draw(tut);
+        if(vplay==true) window.draw(play);
+        if(vtut==true) window.draw(tut);
         if(guy.level==-2)
         {
             window.draw(playa);
@@ -108,14 +136,18 @@ int main()
         if(guy.level>0)
         {
             window.draw(guy);
-            guy.update(window);
+            guy.update(window,0);
         }
 
         for(auto &el : balony)
         {
             if(guy.level>0)
             {
-                el->move(el->vx*guy.bonus,el->vy*guy.bonus);
+                float vxx=el->getvx();
+                float vyy=el->getvy();
+                //el->setvx(vxx);
+               // el->setvy(vyy);
+                el->move(vxx*bonuss,vyy*bonuss);
                 el->kolizja(*sciany[0], *sciany[1], *sciany[2], *sciany[3]);
                 el->kolizja_bohater(guy,1,true, facetime);
                 el->kolizja_bohater(guy,2,false, facetime);
