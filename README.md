@@ -4,9 +4,6 @@ Wojciech Mikołajski  A-3  144407
 
 Projekt będe realizował indywidualnie. Gra będzie miała charakter Arcade. Naszym celem będzie zestrzeliwywanie wrogich celów za pomocą myszki.
 
-*Szkic interfejsu: 
-
-![](https://github.com/wujt89/GTACPP/blob/master/Makieta.jpg?raw=true)
 
 
 Mamy możliwość włączenia wersji z instrukcją jak i bez niej.
