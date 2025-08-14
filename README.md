@@ -1,29 +1,51 @@
-**GTA C++**
+# GTA C++
 
-Wojciech Mikołajski  A-3  144407
+Arcade-style mouse shooter built with C++ and Qt. Protect the hero while shooting hostile balloons. Balloons bounce elastically off each other, the hero, and the walls. They also react to the mouse cursor: aiming directly at a balloon causes it to randomly change direction, so you need to lead your shots. A tutorial overlay can be toggled on or off.
 
-Projekt będe realizował indywidualnie. Gra będzie miała charakter Arcade. Naszym celem będzie zestrzeliwywanie wrogich celów za pomocą myszki.
+## Gameplay
+- Clear waves of balloons. Each level spawns 4 balloons; eliminate all to advance.
+- The hero loses one life when hit by a red balloon.
+- Manage limited time and ammunition.
 
+## Balloon Types
+- Red: Standard enemy; moves slowly.
+- Blue: Smaller and stationary, harder to spot; destroying a blue balloon spawns a red one.
+- Yellow: Fast; destroying a yellow balloon spawns a blue one.
 
+## Game Over Conditions
+- Time runs out
+- Ammunition runs out
+- Hero lives reach zero
 
-Mamy możliwość włączenia wersji z instrukcją jak i bez niej.
-Musimy chronić naszego bohatera zaznaczonego zieloną kropką, ponieważ każde uderzenie czerwonej kropki w naszego bohatera odejmuje mu jedno życie. Balony odbijają się od siebie, od bohatera i od ścian w sposób sprężysty. Balony mają umiejętność wykrywania położenia myszki, jeśli myszka celuje w balon zmienia on zwrot swojego przemieszczania się w losową odległość. Dlatego też aby zestrzelić cel należy celować minimalnie przed niego. Na każdy level przypada 4 balony. Przechodzimy do kolejnego levelu jeśli znisczymy wszystkie balony na planszy.
-Rodzaje balonów:
-- czerwone - zwykłe poruszają się wolno
-- niebieskie - są zmniejszone co utrudnia ich znalezienie na mapie, nie poruszają się, po zniszczeniu niebieskiego balonu powstaje czerwony
-- żółte - poruszają się szybko, po zniszeniu zółtego balonu powstaje niebieski
+## Scoring
+Your score is the highest level reached.
 
-Przegrywamy jeśli skończy nam się czas, skończy nam się amunicja, ilość żyć bohatera osiągnie zero.
-Uzyskany przez nas wynik to level na którym skończyliśmy.
- 
+## Controls
+- Mouse: Aim
+- Click: Shoot
 
+## Build and Run
+This is a Qt Widgets project using `qmake` (project file: `gra/gra.pro`).
 
- 
+### Prerequisites
+- Qt 5.13+ (Qt Widgets)
+- C++11-compatible toolchain
 
- 
+### Option A — Qt Creator
+1. Open `gra/gra.pro` in Qt Creator.
+2. Configure a kit (Qt version and compiler).
+3. Build and run from within the IDE.
 
- 
+### Option B — Command Line (qmake)
+```bash
+qmake gra/gra.pro
+make            # or nmake/jom on Windows
+./gra           # path and name may vary by OS/configuration
+```
 
- 
+## Project Structure
+- `gra/`: C++ source code and Qt project file.
+- `build-gra-.../`: Example build output and bundled assets (images, sounds, fonts) from a local build.
 
- 
+## Assets
+Images, sounds, and fonts needed by the game are included in the repository under the build output folders. If you organize assets differently in your local setup, update the resource loading paths accordingly.
